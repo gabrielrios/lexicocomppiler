@@ -1,35 +1,35 @@
-identificador
-inteiro
-virgula
-ptvirgula
-parenteseabre
-parentesefecha
-doispontos
-literal
-inicio
-fim
-se
-entao
-fim_se
-senao
-para
-de
-ate
-fim_para
-incr
-leia
-imprima
-mais
-menos
-igual
-menor
-maior
-maiorigual
-menorigual
-diferente
-atribuicao
-multiplicacao
-divisao
-e
-ou
-nao
+tkId
+tkInteiro inteiro
+tkVirgula ,
+tkPontoVirgula ;
+tkParenteseAbre (
+tkParenteseFecha )
+tkDoisPontos :
+tkLiteral
+tkInicio inicio
+tkFim fim
+tkSe se
+tkEntao entao
+tkFimSe fim_se
+tkSenao senao
+tkPara para
+tkDe de
+tkAte ate
+tkFimPara fim_para
+tkIncr incr
+tkLeia leia
+tkImprima imprima
+tkMais +
+tkMenos -
+tkIgual ==
+tkMenor <
+tkMaior >
+tkMaiorIgual >=
+tkMenorIgual <=
+tkDiferente <>
+tkAtribuicao =
+tkMultiplicacao *
+tkDivisao /
+tkE e
+tkOu ou
+tkNao nao
