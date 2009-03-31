@@ -1,24 +1,9 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include "token.h"
 
 using namespace std;
-
-class Token {
-    private:
-        string alias;
-        string padrao;
-	public:
-		/*Token(string);
-		Token(string, string);*/
-		bool operator!=(Token otr);
-};
-
-bool Token::operator!=(Token otr) {
-	return alias != otr.alias;
-}
-
-
 
 class Position {
     private:
@@ -38,7 +23,7 @@ class Lexico {
 		vector<Token> Tokens;
 
 	public:
-		Token tkEOF;
+		Token *tkEOF;
 		//Lexico();	// Abre arquivo fonte, e inicializa tabela de token
 		void load_tokens();  // Carrega tokens do arquivo
 		Token next_token();	 // Pega o proximo token e retorna para o analisador sintatico
@@ -47,7 +32,7 @@ class Lexico {
 };
 
 Token Lexico::next_token() {
-	return Token();
+	return Token("null");
 }
 
 void Lexico::load_tokens() {
@@ -63,7 +48,7 @@ int main (int argc, char * const argv[]) {
 	Lexico lexico;
 	
 	
-	while(lexico.next_token() != lexico.tkEOF);
+	while(lexico.next_token() != *(lexico.tkEOF));
 
 	cout << "YAY"<< endl;
 
