@@ -1,11 +1,12 @@
-tkId
+tkIdentificador
+tkLiteral
+tkConstante 1
 tkInteiro inteiro
 tkVirgula ,
 tkPontoVirgula ;
 tkParenteseAbre (
 tkParenteseFecha )
 tkDoisPontos :
-tkLiteral
 tkInicio inicio
 tkFim fim
 tkSe se
