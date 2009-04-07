@@ -67,3 +67,23 @@ Token Lexico::search_token(string value, SearchMethod by) {
 	
 	return Token();
 }
+
+int Lexico::find_symbol(string lexema) {
+	for (int i = 0; i< table_symbols.size(); i++) {
+		if (table_symbols[i].lexema == lexema) {
+			return i;
+		}
+	}
+	return -1;
+}
+
+bool Lexico::insert_symbol(Token tk, string lexema, int linha, int coluna) {
+	int pos_sym;
+	pos_sym = find_symbol(lexema);
+	if (pos_sym == -1) {
+		table_symbols.push_back(Symbol(tk, lexema, linha, coluna));
+	} else {
+		table_symbols[pos_sym].add_position(linha, coluna);
+	}
+	return true;
+}

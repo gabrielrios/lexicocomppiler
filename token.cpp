@@ -32,5 +32,5 @@ bool Token::operator==(Token otr) {
 
 
 string Token::to_str() {
-	return alias + " - " + padrao;
+	return alias;
 }

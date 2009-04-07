@@ -18,10 +18,13 @@
 using namespace std;
 
 class Symbol {
-private:
+public:
 	Token token;
 	string lexema;
 	vector<Position> pares;
+	Symbol(Token, string, int, int);
+	string to_str();
+	void add_position(int, int);
 };
 
 #endif

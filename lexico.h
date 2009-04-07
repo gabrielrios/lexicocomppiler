@@ -23,8 +23,8 @@ typedef enum eSearchMethod {
 }SearchMethod;
 
 class Lexico {
-private:
-	vector<Symbol> *table_symbols;
+public:
+	vector<Symbol> table_symbols;
 	vector<Token> tokens;
 	
 public:
@@ -33,7 +33,8 @@ public:
 	bool load_tokens();  // Carrega tokens do arquivo
 	Token next_token();	 // Pega o proximo token e retorna para o analisador sintatico
 	Token search_token(string value, SearchMethod by); // Busca o token na tabela de tokens
-	bool insert_symbol_table(Token tk, string lexema, int linha, int coluna);
+	bool insert_symbol(Token tk, string lexema, int linha, int coluna); // insere um simbolo na tabela
+	int find_symbol(string lexema); //verifica se o simbolo já existe na tabela de simbolos
 };
 
 #endif
