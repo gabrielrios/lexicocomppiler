@@ -9,8 +9,9 @@
 
 #include "token.h"
 
-//Token::Token() {
-//}
+Token::Token() {
+	alias = "";
+}
 
 Token::Token(string texto) {
 	alias = texto;
@@ -25,4 +26,11 @@ bool Token::operator!=(Token otr) {
 	return alias != otr.alias;
 }
 
+bool Token::operator==(Token otr) {
+	return alias == otr.alias;
+}
 
+
+string Token::to_str() {
+	return alias + " - " + padrao;
+}

@@ -14,14 +14,16 @@
 using namespace std;
 
 class Token {
-	private:
-		string alias;
-		string padrao;
 	public:
-		//Token();
+		string alias; // Nome do Token
+		string padrao; // Padrão reconhecido que gera o token
+	public:
+		Token();
 		Token(string var);
 		Token(string var1, string var2);
+		bool operator==(Token otr);
 		bool operator!=(Token otr);
+		string to_str();
 };
 
 
