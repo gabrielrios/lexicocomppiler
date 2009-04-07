@@ -1,6 +1,6 @@
-tkIdentificador
-tkLiteral
-tkConstante 1
+tkIdentificador #
+tkLiteral #
+tkConstante #
 tkInteiro inteiro
 tkVirgula ,
 tkPontoVirgula ;
