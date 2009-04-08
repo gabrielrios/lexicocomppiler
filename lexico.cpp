@@ -8,18 +8,123 @@
  */
 
 #include "lexico.h"
-#include <fstream>
-#include <iostream>
+#define DEBUG
 
 using namespace std;
 
-Lexico::Lexico() {
+Lexico::Lexico(string source_path) {
+	fstream _source;
 	tkEOF = Token("tkEOF");
-	load_tokens();
+	estado = linha = 0;
+	coluna = -1;
+	_source.open(source_path.c_str(), ios_base::in);
+	if (!_source) {
+		cerr << "Erro ao abrir o código fonte" << endl;
+		exit(-1);
+	}
+	if (!load_tokens()) {
+		exit(-1);
+	}
+	string str;
+	while (getline(_source, str)) {
+		source.push_back(str);
+	}
+	
+#ifdef DEBUG
+	for (int i = 0; i < source.size(); i++) {
+		cout << source[i] << endl;
+	}
+
+//	for (int i = 0; i < 15; i++) {
+//		cout << i << " - " << next_char() << endl;		
+//	}
+
+#endif
+}
+
+char Lexico::next_char() {
+	coluna++;
+	if (coluna >= source[linha].size()) {
+		linha++;
+		coluna = 0;
+	}
+	return source[linha][coluna];
+}
+
+char Lexico::prev_char() {
+	coluna--;
+	if (coluna <= -1) {
+		linha--;
+		coluna = source[linha].size()-1;
+	}
+	return source[linha][coluna];
 }
 
 Token Lexico::next_token() {
-	return Token("tkEOF");
+	char c;
+	estado = 0;
+	while (1) {
+		cout << estado;
+		switch (estado) {
+			case 0:
+				c = next_char();
+				if (isspace(c)) {
+					cout << "espaço";
+					estado = 0;
+				} else if (isalpha(c))	{
+					estado = 1;
+				} else if (isdigit(c)) {
+					estado = 3;
+				} else if (c == '"') {
+					estado = 5;
+				} else {
+					cout << "\ncaracter invalido" << c;
+					exit(-1);
+				}
+				break;
+			case 1:
+				c = next_char();
+				if (isalpha(c) || isdigit(c) || c == '_') {
+					estado = 1;
+				} else {
+					estado = 2;
+				}
+				break;
+			case 2:
+				prev_char();
+				// TODO: verificar se é identificador ou palavra reservada
+				// TODO: inserir tabela simbolo 
+				return search_token("tkIdentificador", BY_TOKEN);
+			case 3:
+				c = next_char();
+				if (isdigit(c)) {
+					estado = 3;
+				} else {
+					estado = 4;
+				}
+				break;
+			case 4:
+				prev_char();
+				// TODO: Inserir na tabela de simbolo
+				return search_token("tkConstante", BY_TOKEN);
+			case 5:
+				c = next_char();
+				
+				if (c == '"') {
+					estado = 6;
+				} else if (c == '\n') {
+					estado = 0;
+					// imprime erro
+				} else {
+					estado = 5;
+				}
+				break;
+			default:
+				break;
+		}
+		cout << "- " << c << endl;
+	}
+	//return Token("tkEOF");
 }
 
 bool Lexico::load_tokens() {
@@ -42,9 +147,9 @@ bool Lexico::load_tokens() {
 	}
 	
 #ifdef DEBUG
-	for(int i = 0; i < tokens.size(); i++) {
-		cout << tokens[i].to_str() << endl;
-	}
+//	for(int i = 0; i < tokens.size(); i++) {
+//		cout << tokens[i].to_str() << endl;
+//	}
 #endif
 	
 	return true;
