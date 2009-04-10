@@ -14,8 +14,7 @@ using namespace std;
 
 Lexico::Lexico(string source_path) {
 	fstream _source;
-	tkEOF = Token("tkEOF", "", -1);
-	estado = linha = 0;
+	estado = linha = last_error_line = 0;
 	coluna = -1;
 	_source.open(source_path.c_str(), ios_base::in);
 	if (!_source) {
@@ -26,8 +25,16 @@ Lexico::Lexico(string source_path) {
 		exit(-1);
 	}
 	string str;
+	tkEOF = search_token("tkEOF", BY_TOKEN);
 	while (getline(_source, str)) {
 		str.push_back('\n');
+<<<<<<< .mine
+		string::size_type st;
+		while ((st = str.find('\t')) != string::npos){
+            str.replace(st, st+1, "    ");
+        }
+=======
+>>>>>>> .r19
 		source.push_back(str);
 	}
 }
@@ -63,7 +70,7 @@ Token Lexico::is_keyword(string lexema) {
 
 Token Lexico::next_token() {
 	Token tk;
-	int old_line;
+	int old_line, old_column;
 	char c;
 	estado = 0;
 	while (1) {
@@ -89,29 +96,12 @@ Token Lexico::next_token() {
 					estado = 16;
 				} else if (c == '>') {
 					estado = 20;
-				} else if (c == '+') {
+				} else if (c == '+' || c == '-' || c == '*' || c == ',' || c == ';' || c == ':' || c == '(' || c == ')' ) {
 					estado = 23;
-				} else if (c == '-') {
-					estado = 24;
-				} else if (c == '*') {
-					estado = 25;
-				} else if (c == ',') {
-					estado = 26;
-				} else if (c == ';') {
-					estado = 27;
-				} else if (c == ':') {
-					estado = 28;
-				} else if (c == '(') {
-					estado = 29;
-				} else if (c == ')') {
-					estado = 30;
 				} else if (c == -1) {
 					return tkEOF;
 				} else {
-					cout << source[linha];
-					for (int x = coluna-1; x >= 0; x--)
-						cout << "-";
-					cout << "^ ERRO: Caractere Inválido" << endl;;
+                    list_erros.push_back(Error(linha, coluna, ER_CARACTERE_INVALIDO, c));
 				}
 				break;
 			case 1:
@@ -141,6 +131,7 @@ Token Lexico::next_token() {
 			case 4:
 				prev_char();
 				tk = search_token("tkConstante", BY_TOKEN);
+				lexema.erase(lexema.size() -1);
 				insert_symbol(tk, lexema, linha+1, (coluna+1)-(lexema.size()-1));
 				return tk;
 			case 5:
@@ -149,10 +140,14 @@ Token Lexico::next_token() {
 					estado = 6;
 				} else if (c == '\n') {
 					estado = 0;
+<<<<<<< .mine
+					list_erros.push_back(Error(linha, source[linha].size()-lexema.size()+1, ER_LITERAL_NAO_FECHADO));
+=======
 					cout << source[linha] << endl;
 					for (int x = source[linha].size()-lexema.size(); x >= 0; x--)
 						cout << "-";
 					cout << "^ Literal não fechado" << endl;
+>>>>>>> .r19
 				} else {
 					estado = 5;
 				}
@@ -177,15 +172,21 @@ Token Lexico::next_token() {
 				}
 				break;
 			case 9:
+                prev_char();
 				return search_token("/", BY_PADRAO);
 			case 10:
 				c = next_char();
 				if (c == '*') {
 					estado = 11;
 					old_line = linha;
+					old_column = coluna;
 				} else {
 					estado = 0;
+<<<<<<< .mine
+					list_erros.push_back(Error(linha, coluna, ER_CARACTERE_INVALIDO, c));
+=======
 					// caracter inválido
+>>>>>>> .r19
 				}
 				break;
 			case 11:
@@ -194,9 +195,13 @@ Token Lexico::next_token() {
 					estado = 12;
 				} else if (c == -1) {
 					estado = 0;
+<<<<<<< .mine
+					list_erros.push_back(Error(old_line, old_column, ER_COMENTARIO_NAO_FECHADO));
+=======
 					cout << source[old_line] << endl;
 					cout << "ERRO: Comentário não fechado" << endl;
 					linha = old_line + 1;
+>>>>>>> .r19
 				}
 				break;
 			case 12:
@@ -253,21 +258,7 @@ Token Lexico::next_token() {
 				prev_char();
 				return search_token(">", BY_PADRAO);
 			case 23:
-				return search_token("+", BY_PADRAO);
-			case 24:
-				return search_token("-", BY_PADRAO);
-			case 25:
-				return search_token("*", BY_PADRAO);
-			case 26:
-				return search_token(",", BY_PADRAO);
-			case 27:
-				return search_token(";", BY_PADRAO);
-			case 28:
-				return search_token(":", BY_PADRAO);
-			case 29:
-				return search_token("(", BY_PADRAO);			
-			case 30:
-				return search_token(")", BY_PADRAO);
+				return search_token(lexema, BY_PADRAO);
 			default:
 				break;
 		}
@@ -343,4 +334,23 @@ bool Lexico::insert_symbol(Token tk, string lexema, int linha, int coluna) {
 		table_symbols[pos_sym].add_position(linha, coluna);
 	}
 	return true;
+<<<<<<< .mine
 }
+
+vector<Error> Lexico::get_line_errors(int line){
+    vector<Error> _errors;
+    
+    for(int i = last_error_line; i < list_erros.size(); i++){
+        if (list_erros[i].linha == line){
+            _errors.push_back(list_erros[i]);
+        }
+        else{
+            last_error_line = i;
+            break;
+        }
+    }
+    return _errors;
+}
+=======
+}
+>>>>>>> .r19
