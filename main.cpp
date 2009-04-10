@@ -1,7 +1,7 @@
 //#define DEBUG
 #include <iostream>
 #include "lexico.h"
-#include "transtable.h"
+//#include "transtable.h"
 
 // Criar arquivo de teste com literal e comentario não fechado
 
@@ -33,6 +33,7 @@ int main (int argc, char * const argv[]) {
 			cout << i << " | "<<  lexico->table_symbols[i].to_str() << endl;
 		}
 	}
+	system("pause");
     // 
     return 0;
 }

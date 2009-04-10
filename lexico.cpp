@@ -8,12 +8,7 @@
  */
 
 #include "lexico.h"
-#include <algorithm>
 //#define DEBUG
-
-char to_lower (const char c) {
-	return tolower(c);
-}
 
 using namespace std;
 
@@ -33,10 +28,8 @@ Lexico::Lexico(string source_path) {
 	string str;
 	while (getline(_source, str)) {
 		str.push_back('\n');
-		replace(str.begin(), str.end(), '\t', ' ');
 		source.push_back(str);
 	}
-	*(source.end() - 1);
 }
 
 char Lexico::next_char() {
@@ -61,7 +54,6 @@ char Lexico::prev_char() {
 }
 
 Token Lexico::is_keyword(string lexema) {
-	transform(lexema.begin(), lexema.end(), lexema.begin(), to_lower);
 	Token tmp = search_token(lexema, BY_PADRAO);
 	if (tmp.is_null()) {
 		return search_token("tkIdentificador", BY_TOKEN);
@@ -157,7 +149,7 @@ Token Lexico::next_token() {
 					estado = 6;
 				} else if (c == '\n') {
 					estado = 0;
-					cout << source[linha];
+					cout << source[linha] << endl;
 					for (int x = source[linha].size()-lexema.size(); x >= 0; x--)
 						cout << "-";
 					cout << "^ Literal não fechado" << endl;
@@ -181,6 +173,7 @@ Token Lexico::next_token() {
 				c = next_char();
 				if (c == '\n') {
 					estado = 0;
+					cout << "Comentario" << endl;
 				}
 				break;
 			case 9:
@@ -191,12 +184,8 @@ Token Lexico::next_token() {
 					estado = 11;
 					old_line = linha;
 				} else {
-					prev_char();
 					estado = 0;
-					cout << source[linha];
-					for (int x = coluna-1; x >= 0; x--)
-						cout << "-";
-					cout << "^ ERRO: Caractere Inválido" << endl;
+					// caracter inválido
 				}
 				break;
 			case 11:
@@ -205,7 +194,7 @@ Token Lexico::next_token() {
 					estado = 12;
 				} else if (c == -1) {
 					estado = 0;
-					cout << source[old_line];
+					cout << source[old_line] << endl;
 					cout << "ERRO: Comentário não fechado" << endl;
 					linha = old_line + 1;
 				}
@@ -214,6 +203,7 @@ Token Lexico::next_token() {
 				c = next_char();
 				if (c == '}') {
 					estado = 0;
+					cout << "Comentario"<< endl;
 				} else {
 					prev_char();
 					estado = 11;
@@ -294,7 +284,7 @@ bool Lexico::load_tokens() {
 	string tmp_alias, tmp_padrao;
 	int count = 0;
 	
-	tokens_list.open("/Users/gabriel/lexicocompiler/tokens_list.dat", ios_base::in); // TODO: mudar caminho do arquivo
+	tokens_list.open("tokens_list.dat", ios_base::in); // TODO: mudar caminho do arquivo
 	
 	if (!tokens_list) {
 		cerr << "Erro ao abrir o arquivo de tokens" << endl;

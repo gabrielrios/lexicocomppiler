@@ -1,0 +1,20 @@
+// Comentário 1 //
+{* Comentário 2 *}
+(* Comentário 3 *)
+/* Comentário 4 
+/* Comentário 5
+
+inicio
+	inteiro: x, y, z;  /* Declaração de variáveis
+	{* Esse tipo de dado existe mesmo?? *} float: media;
+	imprima ("Digite um valor para x:");
+	leia (x);
+	imprima ("Digite um valor para y:");
+	leia (y);
+	imprima ("Digite um valor para z:");
+	leia (z);
+	media = (x+y+z)*0.33333333;
+	imprima("Media = ");
+	imprima(media);
+	imprima("\n");
+fim

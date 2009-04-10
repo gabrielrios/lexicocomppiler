@@ -1,0 +1,44 @@
+Inicio
+	Inteiro: X, Y, Z;
+	Inteiro: Maior;
+	Inteiro: Menor;
+	Inteiro: Media;
+	Imprima ("Digite um valor para X:");
+	Leia (X);
+	Imprima ("Digite um valor para Y:");
+	Leia (Y);
+	Imprima ("Digite um valor para Z:");
+	Leia (Z);
+	Se (X>=Y) E (X>=Z) Entao
+		Maior = X;
+		Se (Y<=Z) Entao
+			Menor = Y;
+		Senao 
+			Menor = Z;
+		Fim_Se
+	Senao Se (Y>=X) E (Y>=Z) Entao
+		Maior = Y;
+		Se (X<=Z) Entao
+			Menor = X;
+		Senao 
+			Menor = Z;
+		Fim_Se
+	Senao
+		Maior = Z;
+		Se (X<=Y) Então
+			Menor = X;
+		Senao 
+			Menor = Y;
+		Fim_Se
+	Fim_Se	
+	Media = (X+Y+Z)/3;
+	Imprima("Maior = ");
+	Imprima(Maior);
+	Imprima("\n");
+	Imprima("Media = ");
+	Imprima(Media);
+	Imprima("\n");
+	Imprima("Menor = ");
+	Imprima(Menor);
+	Imprima("\n");
+Fim

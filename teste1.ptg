@@ -1,0 +1,13 @@
+inicio
+   inteiro: n, fatorial;
+   imprima ("Digite um valor para n:");
+   leia (n);
+   fatorial <- 1;
+   para i de 1 ate n faça
+      fatorial <- fatorial * i;
+   fim_para
+   imprima("Fatorial (");
+   imprima(n);
+   imprima(") =");
+   imprima(fatorial);
+fim

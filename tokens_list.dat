@@ -1,6 +1,7 @@
 tkIdentificador #
 tkLiteral #
 tkConstante #
+tkEOF #
 tkInteiro inteiro
 tkVirgula ,
 tkPontoVirgula ;
