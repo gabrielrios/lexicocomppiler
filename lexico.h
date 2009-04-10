@@ -45,6 +45,7 @@ public:
 	int find_symbol(string lexema); //verifica se o simbolo já existe na tabela de simbolos
 	char next_char(); // pega o próximo caractere
 	char prev_char(); // pega o caractere anterior
+	Token is_keyword(string lexema); // verifica se é uma palavra-chave e retorna o token da mesma, ou tkIdentificador se não for
 };
 
 #endif

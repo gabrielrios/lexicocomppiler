@@ -14,7 +14,7 @@ using namespace std;
 
 Lexico::Lexico(string source_path) {
 	fstream _source;
-	tkEOF = Token("tkEOF");
+	tkEOF = Token("tkEOF", "", -1);
 	estado = linha = 0;
 	coluna = -1;
 	_source.open(source_path.c_str(), ios_base::in);
@@ -54,7 +54,16 @@ char Lexico::prev_char() {
 	return source[linha][coluna];
 }
 
+Token Lexico::is_keyword(string lexema) {
+	Token tmp = search_token(lexema, BY_PADRAO);
+	if (tmp.is_null()) {
+		return search_token("tkIdentificador", BY_TOKEN);
+	}
+	return tmp;
+}
+
 Token Lexico::next_token() {
+	Token tk;
 	int old_line;
 	char c;
 	estado = 0;
@@ -81,10 +90,26 @@ Token Lexico::next_token() {
 					estado = 16;
 				} else if (c == '>') {
 					estado = 20;
+				} else if (c == '+') {
+					estado = 23;
+				} else if (c == '-') {
+					estado = 24;
+				} else if (c == '*') {
+					estado = 25;
+				} else if (c == ',') {
+					estado = 26;
+				} else if (c == ';') {
+					estado = 27;
+				} else if (c == ':') {
+					estado = 28;
+				} else if (c == '(') {
+					estado = 29;
+				} else if (c == ')') {
+					estado = 30;
 				} else if (c == -1) {
-					return Token("tkEOF");
+					return tkEOF;
 				} else {
-					cout << source[linha] << endl;
+					cout << source[linha];
 					for (int x = coluna-1; x >= 0; x--)
 						cout << "-";
 					cout << "^ ERRO: Caractere Inválido" << endl;;
@@ -101,10 +126,11 @@ Token Lexico::next_token() {
 			case 2:
 				prev_char();
 				lexema.erase(lexema.size()-1);
-				// TODO: verificar se é identificador ou palavra reservada
-				// TODO: inserir tabela simbolo 
-				cout << lexema << endl;
-				return search_token("tkIdentificador", BY_TOKEN);
+				tk = is_keyword(lexema);
+				if (tk._id == 0) {
+					insert_symbol(tk, lexema, linha+1, (coluna+1)-(lexema.size()-1));
+				} ;
+				return tk;
 			case 3:
 				c = next_char();
 				if (isdigit(c)) {
@@ -115,13 +141,14 @@ Token Lexico::next_token() {
 				break;
 			case 4:
 				prev_char();
-				// TODO: Inserir na tabela de simbolo
-				return search_token("tkConstante", BY_TOKEN);
+				tk = search_token("tkConstante", BY_TOKEN);
+				insert_symbol(tk, lexema, linha+1, (coluna+1)-(lexema.size()-1));
+				return tk;
 			case 5:
 				c = next_char();				
 				if (c == '"') {
 					estado = 6;
-				} else if (c == '\n') { // MAC ONLY?
+				} else if (c == '\n') {
 					estado = 0;
 					cout << source[linha] << endl;
 					for (int x = source[linha].size()-lexema.size(); x >= 0; x--)
@@ -132,8 +159,9 @@ Token Lexico::next_token() {
 				}
 				break;
 			case 6:
-				// TODO: Inserir na tablea de simbolo
-				return search_token("tkLiteral", BY_TOKEN);
+				tk = search_token("tkLiteral", BY_TOKEN);
+				insert_symbol(tk, lexema, linha+1, (coluna+1)-(lexema.size()-1));
+				return tk;
 			case 7:
 				c = next_char();
 				if (c == '*') {
@@ -225,6 +253,22 @@ Token Lexico::next_token() {
 			case 22:
 				prev_char();
 				return search_token(">", BY_PADRAO);
+			case 23:
+				return search_token("+", BY_PADRAO);
+			case 24:
+				return search_token("-", BY_PADRAO);
+			case 25:
+				return search_token("*", BY_PADRAO);
+			case 26:
+				return search_token(",", BY_PADRAO);
+			case 27:
+				return search_token(";", BY_PADRAO);
+			case 28:
+				return search_token(":", BY_PADRAO);
+			case 29:
+				return search_token("(", BY_PADRAO);			
+			case 30:
+				return search_token(")", BY_PADRAO);
 			default:
 				break;
 		}
@@ -239,6 +283,7 @@ Token Lexico::next_token() {
 bool Lexico::load_tokens() {
 	fstream tokens_list;
 	string tmp_alias, tmp_padrao;
+	int count = 0;
 	
 	tokens_list.open("/Users/gabriel/lexicocompiler/tokens_list.dat", ios_base::in); // TODO: mudar caminho do arquivo
 	
@@ -251,7 +296,7 @@ bool Lexico::load_tokens() {
 		if (tmp_padrao == "#") {
 			tmp_padrao = "";
 		}
-		tokens.push_back(Token(tmp_alias, tmp_padrao));
+		tokens.push_back(Token(tmp_alias, tmp_padrao, count++));
 	}
 	
 #ifdef DEBUG

@@ -1,6 +1,7 @@
 //#define DEBUG
 #include <iostream>
 #include "lexico.h"
+#include "transtable.h"
 
 // Criar arquivo de teste com literal e comentario não fechado
 
@@ -16,14 +17,22 @@ int main (int argc, char * const argv[]) {
 		exit(-1);
 	}
 	
-	lexico = new Lexico(argv[1]);
-	
-	do {
-		tk = lexico->next_token();
-		cout << tk.to_str() << endl;
-	} while(tk != lexico->tkEOF) ;
+	for (int j = 1; j < argc; j++) {
 
+		lexico = new Lexico(argv[j]);
+		
+		do {
+			tk = lexico->next_token();
+		} while(tk != lexico->tkEOF) ;
 
+		cout << endl << "######################################################"<< endl;
+		cout << "#\t\t\t\t\tTabela de Simbolos\t\t\t\t\t  #"<< endl;
+		cout << "######################################################"<< endl << endl;
+		
+		for (int i = 0; i < lexico->table_symbols.size(); i++) {
+			cout << i << " | "<<  lexico->table_symbols[i].to_str() << endl;
+		}
+	}
     // 
     return 0;
 }
