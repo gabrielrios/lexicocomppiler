@@ -27,6 +27,7 @@ Lexico::Lexico(string source_path) {
 	}
 	string str;
 	while (getline(_source, str)) {
+		str.push_back('\n');
 		source.push_back(str);
 	}
 	*(source.end() - 1);
@@ -37,6 +38,9 @@ char Lexico::next_char() {
 	if (coluna >= source[linha].size()) {
 		linha++;
 		coluna = 0;
+	}
+	if (linha >= source.size()) {
+		return -1;
 	}
 	return source[linha][coluna];
 }
@@ -51,6 +55,7 @@ char Lexico::prev_char() {
 }
 
 Token Lexico::next_token() {
+	int old_line;
 	char c;
 	estado = 0;
 	while (1) {
@@ -68,9 +73,21 @@ Token Lexico::next_token() {
 					estado = 5;
 				} else if (c == '/') {
 					estado = 7;
-				} else if (0){
-					
+				} else if (c == '{'){
+					estado = 10;
+				} else if (c == '=') {
+					estado = 13;
+				} else if (c == '<') {
+					estado = 16;
+				} else if (c == '>') {
+					estado = 20;
+				} else if (c == -1) {
+					return Token("tkEOF");
 				} else {
+					cout << source[linha] << endl;
+					for (int x = coluna-1; x >= 0; x--)
+						cout << "-";
+					cout << "^ ERRO: Caractere Inválido" << endl;;
 				}
 				break;
 			case 1:
@@ -104,7 +121,7 @@ Token Lexico::next_token() {
 				c = next_char();				
 				if (c == '"') {
 					estado = 6;
-				} else if (c == 13) { // MAC ONLY?
+				} else if (c == '\n') { // MAC ONLY?
 					estado = 0;
 					cout << source[linha] << endl;
 					for (int x = source[linha].size()-lexema.size(); x >= 0; x--)
@@ -127,13 +144,87 @@ Token Lexico::next_token() {
 				break;
 			case 8:
 				c = next_char();
-				if (c == 13) {
+				if (c == '\n') {
 					estado = 0;
 					cout << "Comentario" << endl;
 				}
 				break;
 			case 9:
 				return search_token("/", BY_PADRAO);
+			case 10:
+				c = next_char();
+				if (c == '*') {
+					estado = 11;
+					old_line = linha;
+				} else {
+					estado = 0;
+					// caracter inválido
+				}
+				break;
+			case 11:
+				c = next_char();
+				if (c == '*') {
+					estado = 12;
+				} else if (c == -1) {
+					estado = 0;
+					cout << source[old_line] << endl;
+					cout << "ERRO: Comentário não fechado" << endl;
+					linha = old_line + 1;
+				}
+				break;
+			case 12:
+				c = next_char();
+				if (c == '}') {
+					estado = 0;
+					cout << "Comentario"<< endl;
+				} else {
+					prev_char();
+					estado = 11;
+				}
+				break;
+			case 13:
+				c = next_char();
+				if (c == '=') {
+					estado = 14;
+				} else {
+					estado = 15;
+				}
+				break;
+			case 14:
+				return search_token("==", BY_PADRAO);
+			case 15:
+				prev_char();
+				return search_token("=", BY_PADRAO);
+			case 16:
+				c = next_char();
+				if (c == '>') {
+					estado = 17;
+				} else if (c == '=') {
+					estado = 18;
+				} else {
+					estado = 19;
+				}
+				break;
+			case 17:
+				return search_token("<>", BY_PADRAO);
+			case 18:
+				return search_token("<=", BY_PADRAO);
+			case 19:
+				prev_char();
+				return search_token("<", BY_PADRAO);
+			case 20:
+				c = next_char();
+				if (c == '=') {
+					estado = 21;
+				} else {
+					estado = 22;
+				}
+				break;
+			case 21:
+				return search_token(">=", BY_PADRAO);
+			case 22:
+				prev_char();
+				return search_token(">", BY_PADRAO);
 			default:
 				break;
 		}
@@ -143,11 +234,9 @@ Token Lexico::next_token() {
 		printf("%i- %i\n", estado, c);
 #endif
 	}
-	//return Token("tkEOF");
 }
 
 bool Lexico::load_tokens() {
-	//tkEOF = Token("tkEOF");
 	fstream tokens_list;
 	string tmp_alias, tmp_padrao;
 	
