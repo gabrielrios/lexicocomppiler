@@ -16,7 +16,7 @@
 #include <fstream>
 #include "token.h"
 #include "symbol.h"
-
+#include "error.h"
 
 using namespace std;
 
@@ -32,8 +32,10 @@ public:
 	//fstream source;
 	vector<string> source;
 	int estado;
+	int last_error_line;
 	vector<Symbol> table_symbols;
 	vector<Token> tokens;
+	vector<Error> list_erros;
 	
 public:
 	Token tkEOF;
@@ -46,6 +48,7 @@ public:
 	char next_char(); // pega o próximo caractere
 	char prev_char(); // pega o caractere anterior
 	Token is_keyword(string lexema); // verifica se é uma palavra-chave e retorna o token da mesma, ou tkIdentificador se não for
+	vector<Error> get_line_errors(int line);
 };
 
 #endif

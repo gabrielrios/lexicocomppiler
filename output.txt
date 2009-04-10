@@ -1,0 +1,488 @@
+tkInicio
+tkInteiro
+tkDoisPontos
+tkIdentificador
+tkVirgula
+tkIdentificador
+tkPontoVirgula
+tkImprima
+tkParenteseAbre
+tkLiteral
+tkParenteseFecha
+tkPontoVirgula
+tkLeia
+tkParenteseAbre
+tkIdentificador
+tkParenteseFecha
+tkPontoVirgula
+tkIdentificador
+tkMenor
+tkMenos
+tkConstante
+tkPontoVirgula
+tkPara
+tkIdentificador
+tkDe
+tkConstante
+tkAte
+tkIdentificador
+tkIdentificador
+tkIdentificador
+tkIdentificador
+tkMenor
+tkMenos
+tkIdentificador
+tkMultiplicacao
+tkIdentificador
+tkPontoVirgula
+tkFimPara
+tkImprima
+tkParenteseAbre
+tkLiteral
+tkParenteseFecha
+tkPontoVirgula
+tkImprima
+tkParenteseAbre
+tkIdentificador
+tkParenteseFecha
+tkPontoVirgula
+tkImprima
+tkParenteseAbre
+tkLiteral
+tkParenteseFecha
+tkPontoVirgula
+tkImprima
+tkParenteseAbre
+tkIdentificador
+tkParenteseFecha
+tkPontoVirgula
+tkFim
+tkEOF
+    0 inicio
+    1    inteiro: n, fatorial;
+    2    imprima ("Digite um valor para n:");
+    3    leia (n);
+    4    fatorial <- 1;
+    5    para i de 1 ate n faça
+      -----------------------^ 
+      Erro léxico na linha 5 coluna 23: Caractere inválido `ç'
+    6       fatorial <- fatorial * i;
+    7    fim_para
+    8    imprima("Fatorial (");
+    9    imprima(n);
+   10    imprima(") =");
+   11    imprima(fatorial);
+   12 fim
+
+######################################################
+#					Tabela de Simbolos					  #
+######################################################
+
+0 | tkIdentificador | n | (2,13)(4,10)(6,20)(10,12)
+1 | tkIdentificador | fatorial | (2,16)(5,4)(7,7)(7,19)(12,12)
+2 | tkLiteral | "Digite um valor para n:" | (3,13)
+3 | tkConstante | 1 | (5,16)(6,14)
+4 | tkIdentificador | i | (6,9)(7,30)
+5 | tkIdentificador | fa | (6,22)
+6 | tkIdentificador | a | (6,25)
+7 | tkLiteral | "Fatorial (" | (9,12)
+8 | tkLiteral | ") =" | (11,12)
+tkInicio
+tkInteiro
+tkDoisPontos
+tkIdentificador
+tkVirgula
+tkIdentificador
+tkVirgula
+tkIdentificador
+tkPontoVirgula
+tkInteiro
+tkDoisPontos
+tkIdentificador
+tkPontoVirgula
+tkInteiro
+tkDoisPontos
+tkIdentificador
+tkPontoVirgula
+tkInteiro
+tkDoisPontos
+tkIdentificador
+tkPontoVirgula
+tkImprima
+tkParenteseAbre
+tkLiteral
+tkParenteseFecha
+tkPontoVirgula
+tkLeia
+tkParenteseAbre
+tkIdentificador
+tkParenteseFecha
+tkPontoVirgula
+tkImprima
+tkParenteseAbre
+tkLiteral
+tkParenteseFecha
+tkPontoVirgula
+tkLeia
+tkParenteseAbre
+tkIdentificador
+tkParenteseFecha
+tkPontoVirgula
+tkImprima
+tkParenteseAbre
+tkLiteral
+tkParenteseFecha
+tkPontoVirgula
+tkLeia
+tkParenteseAbre
+tkIdentificador
+tkParenteseFecha
+tkPontoVirgula
+tkSe
+tkParenteseAbre
+tkIdentificador
+tkMaiorIgual
+tkIdentificador
+tkParenteseFecha
+tkE
+tkParenteseAbre
+tkIdentificador
+tkMaiorIgual
+tkIdentificador
+tkParenteseFecha
+tkEntao
+tkIdentificador
+tkAtribuicao
+tkIdentificador
+tkPontoVirgula
+tkIdentificador
+tkMenorIgual
+tkIdentificador
+tkParenteseFecha
+tkEntao
+tkIdentificador
+tkAtribuicao
+tkIdentificador
+tkPontoVirgula
+tkIdentificador
+tkIdentificador
+tkAtribuicao
+tkIdentificador
+tkPontoVirgula
+tkSe
+tkSenao
+tkSe
+tkParenteseAbre
+tkIdentificador
+tkMaiorIgual
+tkIdentificador
+tkParenteseFecha
+tkE
+tkParenteseAbre
+tkIdentificador
+tkMaiorIgual
+tkIdentificador
+tkParenteseFecha
+tkEntao
+tkIdentificador
+tkAtribuicao
+tkIdentificador
+tkPontoVirgula
+tkIdentificador
+tkMenorIgual
+tkIdentificador
+tkParenteseFecha
+tkEntao
+tkIdentificador
+tkAtribuicao
+tkIdentificador
+tkPontoVirgula
+tkIdentificador
+tkIdentificador
+tkAtribuicao
+tkIdentificador
+tkPontoVirgula
+tkSe
+tkSenao
+tkIdentificador
+tkAtribuicao
+tkIdentificador
+tkPontoVirgula
+tkIdentificador
+tkMenorIgual
+tkIdentificador
+tkParenteseFecha
+tkIdentificador
+tkIdentificador
+tkIdentificador
+tkAtribuicao
+tkIdentificador
+tkPontoVirgula
+tkIdentificador
+tkIdentificador
+tkAtribuicao
+tkIdentificador
+tkPontoVirgula
+tkSe
+tkFimSe
+tkIdentificador
+tkAtribuicao
+tkParenteseAbre
+tkIdentificador
+tkMais
+tkIdentificador
+tkMais
+tkIdentificador
+tkParenteseFecha
+tkDivisao
+tkConstante
+tkPontoVirgula
+tkImprima
+tkParenteseAbre
+tkLiteral
+tkParenteseFecha
+tkPontoVirgula
+tkImprima
+tkParenteseAbre
+tkIdentificador
+tkParenteseFecha
+tkPontoVirgula
+tkImprima
+tkParenteseAbre
+tkLiteral
+tkParenteseFecha
+tkPontoVirgula
+tkImprima
+tkParenteseAbre
+tkLiteral
+tkParenteseFecha
+tkPontoVirgula
+tkImprima
+tkParenteseAbre
+tkIdentificador
+tkParenteseFecha
+tkPontoVirgula
+tkImprima
+tkParenteseAbre
+tkLiteral
+tkParenteseFecha
+tkPontoVirgula
+tkImprima
+tkParenteseAbre
+tkLiteral
+tkParenteseFecha
+tkPontoVirgula
+tkImprima
+tkParenteseAbre
+tkIdentificador
+tkParenteseFecha
+tkPontoVirgula
+tkImprima
+tkParenteseAbre
+tkLiteral
+tkParenteseFecha
+tkPontoVirgula
+tkFim
+tkEOF
+    0 Inicio
+    1     Inteiro: X, Y, Z;
+    2     Inteiro: Maior;
+    3     Inteiro: Menor;
+    4     Inteiro: Media;
+    5     Imprima ("Digite um valor para X:");
+    6     Leia (X);
+    7     Imprima ("Digite um valor para Y:");
+    8     Leia (Y);
+    9     Imprima ("Digite um valor para Z:");
+   10     Leia (Z);
+   11     Se (X>=Y) E (X>=Z) Entao
+   12         r = X;
+   13         Y<=Z) Entao
+   14         or = Y;
+   15         o 
+   16         or = Z;
+   17         Se
+   18     Senao Se (Y>=X) E (Y>=Z) Entao
+   19         r = Y;
+   20         X<=Z) Entao
+   21         or = X;
+   22         o 
+   23         or = Z;
+   24         Se
+   25     Senao
+   26         r = Z;
+   27         X<=Y) Então
+      -----------------^ 
+      Erro léxico na linha 27 coluna 17: Caractere inválido `ã'
+   28         or = X;
+   29         o 
+   30         or = Y;
+   31         Se
+   32     Fim_Se       33     Media = (X+Y+Z)/3;
+   34     Imprima("Maior = ");
+   35     Imprima(Maior);
+   36     Imprima("\n");
+   37     Imprima("Media = ");
+   38     Imprima(Media);
+   39     Imprima("\n");
+   40     Imprima("Menor = ");
+   41     Imprima(Menor);
+   42     Imprima("\n");
+   43 Fim
+
+######################################################
+#					Tabela de Simbolos					  #
+######################################################
+
+0 | tkIdentificador | X | (2,14)(7,11)(12,9)(12,18)(13,13)(19,18)(21,9)(22,14)(28,9)(29,14)(34,14)
+1 | tkIdentificador | Y | (2,17)(9,11)(12,12)(14,9)(15,14)(19,15)(19,24)(20,13)(28,12)(31,14)(34,16)
+2 | tkIdentificador | Z | (2,20)(11,11)(12,21)(14,12)(17,14)(19,27)(21,12)(24,14)(27,13)(34,18)
+3 | tkIdentificador | Maior | (3,14)(36,13)
+4 | tkIdentificador | Menor | (4,14)(42,13)
+5 | tkIdentificador | Media | (5,14)(34,5)(39,13)
+6 | tkLiteral | "Digite um valor para X:" | (6,14)
+7 | tkLiteral | "Digite um valor para Y:" | (8,14)
+8 | tkLiteral | "Digite um valor para Z:" | (10,14)
+9 | tkIdentificador | r | (13,9)(20,9)(27,9)
+10 | tkIdentificador | or | (15,9)(17,9)(22,9)(24,9)(29,9)(31,9)
+11 | tkIdentificador | o | (16,9)(23,9)(28,19)(30,9)
+12 | tkIdentificador | Ent | (28,15)
+13 | tkConstante | 3 | (34,21)
+14 | tkLiteral | "Maior = " | (35,13)
+15 | tkLiteral | "\n" | (37,13)(40,13)(43,13)
+16 | tkLiteral | "Media = " | (38,13)
+17 | tkLiteral | "Menor = " | (41,13)
+tkDivisao
+tkDivisao
+tkIdentificador
+tkIdentificador
+tkConstante
+tkDivisao
+tkDivisao
+tkParenteseAbre
+tkMultiplicacao
+tkIdentificador
+tkIdentificador
+tkConstante
+tkMultiplicacao
+tkParenteseFecha
+tkInicio
+tkInteiro
+tkDoisPontos
+tkIdentificador
+tkVirgula
+tkIdentificador
+tkVirgula
+tkIdentificador
+tkPontoVirgula
+tkIdentificador
+tkDoisPontos
+tkIdentificador
+tkPontoVirgula
+tkImprima
+tkParenteseAbre
+tkLiteral
+tkParenteseFecha
+tkPontoVirgula
+tkLeia
+tkParenteseAbre
+tkIdentificador
+tkParenteseFecha
+tkPontoVirgula
+tkImprima
+tkParenteseAbre
+tkLiteral
+tkParenteseFecha
+tkPontoVirgula
+tkLeia
+tkParenteseAbre
+tkIdentificador
+tkParenteseFecha
+tkPontoVirgula
+tkImprima
+tkParenteseAbre
+tkLiteral
+tkParenteseFecha
+tkPontoVirgula
+tkLeia
+tkParenteseAbre
+tkIdentificador
+tkParenteseFecha
+tkPontoVirgula
+tkIdentificador
+tkAtribuicao
+tkParenteseAbre
+tkIdentificador
+tkMais
+tkIdentificador
+tkMais
+tkIdentificador
+tkParenteseFecha
+tkMultiplicacao
+tkConstante
+tkConstante
+tkPontoVirgula
+tkImprima
+tkParenteseAbre
+tkLiteral
+tkParenteseFecha
+tkPontoVirgula
+tkImprima
+tkParenteseAbre
+tkIdentificador
+tkParenteseFecha
+tkPontoVirgula
+tkImprima
+tkParenteseAbre
+tkLiteral
+tkParenteseFecha
+tkPontoVirgula
+tkFim
+tkEOF
+    0 // Comentário 1 //
+      ---------^ 
+      Erro léxico na linha 0 coluna 9: Caractere inválido `á'
+    1 {* Comentário 2 *}
+    2 (* Comentário 3 *)
+      ---------^ 
+      Erro léxico na linha 2 coluna 9: Caractere inválido `á'
+    3 /* Comentário 4 
+    4 /* Comentário 5
+    5 
+    6 inicio
+    7     inteiro: x, y, z;  /* Declaração de variáveis
+    8     {* Esse tipo de dado existe mesmo?? *} float: media;
+    9     imprima ("Digite um valor para x:");
+   10     leia (x);
+   11     imprima ("Digite um valor para y:");
+   12     leia (y);
+   13     imprima ("Digite um valor para z:");
+   14     leia (z);
+   15     media = (x+y+z)*0.33333333;
+      ---------------------^ 
+      Erro léxico na linha 15 coluna 21: Caractere inválido `.'
+   16     imprima("Media = ");
+   17     imprima(media);
+   18     imprima("\n");
+   19 fim
+
+######################################################
+#					Tabela de Simbolos					  #
+######################################################
+
+0 | tkIdentificador | Coment | (1,4)(3,4)
+1 | tkIdentificador | rio | (1,11)(3,11)
+2 | tkConstante | 1 | (1,15)
+3 | tkConstante | 3 | (3,15)
+4 | tkIdentificador | x | (8,14)(11,11)(16,14)
+5 | tkIdentificador | y | (8,17)(13,11)(16,16)
+6 | tkIdentificador | z | (8,20)(15,11)(16,18)
+7 | tkIdentificador | float | (9,44)
+8 | tkIdentificador | media | (9,51)(16,5)(18,13)
+9 | tkLiteral | "Digite um valor para x:" | (10,14)
+10 | tkLiteral | "Digite um valor para y:" | (12,14)
+11 | tkLiteral | "Digite um valor para z:" | (14,14)
+12 | tkConstante | 0 | (16,21)
+13 | tkConstante | 33333333 | (16,23)
+14 | tkLiteral | "Media = " | (17,13)
+15 | tkLiteral | "\n" | (19,13)

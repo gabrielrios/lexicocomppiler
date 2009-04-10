@@ -8,7 +8,12 @@
  */
 
 #include "lexico.h"
+#include <algorithm>
 //#define DEBUG
+
+char to_lower (const char c) {
+	return tolower(c);
+}
 
 using namespace std;
 
@@ -28,15 +33,13 @@ Lexico::Lexico(string source_path) {
 	tkEOF = search_token("tkEOF", BY_TOKEN);
 	while (getline(_source, str)) {
 		str.push_back('\n');
-<<<<<<< .mine
 		string::size_type st;
 		while ((st = str.find('\t')) != string::npos){
             str.replace(st, st+1, "    ");
         }
-=======
->>>>>>> .r19
 		source.push_back(str);
 	}
+	*(source.end() - 1);
 }
 
 char Lexico::next_char() {
@@ -61,6 +64,7 @@ char Lexico::prev_char() {
 }
 
 Token Lexico::is_keyword(string lexema) {
+	transform(lexema.begin(), lexema.end(), lexema.begin(), to_lower);
 	Token tmp = search_token(lexema, BY_PADRAO);
 	if (tmp.is_null()) {
 		return search_token("tkIdentificador", BY_TOKEN);
@@ -140,14 +144,7 @@ Token Lexico::next_token() {
 					estado = 6;
 				} else if (c == '\n') {
 					estado = 0;
-<<<<<<< .mine
 					list_erros.push_back(Error(linha, source[linha].size()-lexema.size()+1, ER_LITERAL_NAO_FECHADO));
-=======
-					cout << source[linha] << endl;
-					for (int x = source[linha].size()-lexema.size(); x >= 0; x--)
-						cout << "-";
-					cout << "^ Literal não fechado" << endl;
->>>>>>> .r19
 				} else {
 					estado = 5;
 				}
@@ -168,7 +165,6 @@ Token Lexico::next_token() {
 				c = next_char();
 				if (c == '\n') {
 					estado = 0;
-					cout << "Comentario" << endl;
 				}
 				break;
 			case 9:
@@ -181,12 +177,9 @@ Token Lexico::next_token() {
 					old_line = linha;
 					old_column = coluna;
 				} else {
+					prev_char();
 					estado = 0;
-<<<<<<< .mine
 					list_erros.push_back(Error(linha, coluna, ER_CARACTERE_INVALIDO, c));
-=======
-					// caracter inválido
->>>>>>> .r19
 				}
 				break;
 			case 11:
@@ -195,20 +188,13 @@ Token Lexico::next_token() {
 					estado = 12;
 				} else if (c == -1) {
 					estado = 0;
-<<<<<<< .mine
 					list_erros.push_back(Error(old_line, old_column, ER_COMENTARIO_NAO_FECHADO));
-=======
-					cout << source[old_line] << endl;
-					cout << "ERRO: Comentário não fechado" << endl;
-					linha = old_line + 1;
->>>>>>> .r19
 				}
 				break;
 			case 12:
 				c = next_char();
 				if (c == '}') {
 					estado = 0;
-					cout << "Comentario"<< endl;
 				} else {
 					prev_char();
 					estado = 11;
@@ -334,7 +320,6 @@ bool Lexico::insert_symbol(Token tk, string lexema, int linha, int coluna) {
 		table_symbols[pos_sym].add_position(linha, coluna);
 	}
 	return true;
-<<<<<<< .mine
 }
 
 vector<Error> Lexico::get_line_errors(int line){
@@ -351,6 +336,3 @@ vector<Error> Lexico::get_line_errors(int line){
     }
     return _errors;
 }
-=======
-}
->>>>>>> .r19
