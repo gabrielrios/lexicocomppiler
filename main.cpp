@@ -15,9 +15,11 @@ int main (int argc, char * const argv[]) {
 	
 	lexico = new Lexico(argv[1]);
 
-	cout << lexico->next_token().to_str();
-	cout << lexico->next_token().to_str();
-	cout << lexico->next_token().to_str();
+
+	
+	for (int i =0; i < 6; i++) {
+		cout << lexico->next_token().to_str() << endl;	
+	}
 	
 	//while(lexico.next_token() != lexico.tkEOF);
 

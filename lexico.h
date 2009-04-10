@@ -28,6 +28,7 @@ typedef enum eSearchMethod {
 class Lexico {
 public:
 	int linha, coluna;
+	string lexema; //acumulador do lexema;
 	//fstream source;
 	vector<string> source;
 	int estado;
