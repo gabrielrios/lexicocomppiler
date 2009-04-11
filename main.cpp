@@ -27,9 +27,10 @@ int main (int argc, char * const argv[]) {
 	for (int j = 1; j < argc; j++) {
 
 		lexico = new Lexico(argv[j]);
+		
 		linha = -1;
 		output << "Linha  Token             Cod  Pos lexema" << endl;
-		output << "-----  ----------------  ---  ----------"<< endl;
+		//output << "-----  ----------------  ---  ----------"<< endl;
 		do {
 			tk = lexico->next_token();
 			if (lexico->linha > linha) {

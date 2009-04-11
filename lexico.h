@@ -43,6 +43,7 @@ public:
 	Lexico(string source_path);	// Abre arquivo fonte, e inicializa tabela de token
 	bool load_tokens();  // Carrega tokens do arquivo
 	Token next_token();	 // Pega o proximo token e retorna para o analisador sintatico
+	Token next_token_v1();
 	Token search_token(string value, SearchMethod by); // Busca o token na tabela de tokens
 	bool insert_symbol(Token tk, string lexema, int linha, int coluna); // insere um simbolo na tabela
 	int find_symbol(string lexema); //verifica se o simbolo já existe na tabela de simbolos

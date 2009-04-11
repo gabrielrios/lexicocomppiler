@@ -39,7 +39,6 @@ Lexico::Lexico(string source_path) {
         }
 		source.push_back(str);
 	}
-	*(source.end() - 1);
 }
 
 char Lexico::next_char() {
@@ -51,6 +50,7 @@ char Lexico::next_char() {
 	if (linha >= source.size()) {
 		return -1;
 	}
+	lexema.push_back(source[linha][coluna]);
 	return source[linha][coluna];
 }
 
@@ -60,6 +60,7 @@ char Lexico::prev_char() {
 		linha--;
 		coluna = source[linha].size()-1;
 	}
+	lexema.erase(lexema.size() -1);
 	return source[linha][coluna];
 }
 
@@ -75,42 +76,42 @@ Token Lexico::is_keyword(string lexema) {
 Token Lexico::next_token() {
 	Token tk;
 	int old_line, old_column;
-	char c;
+	char _char;
 	estado = 0;
 	while (1) {
 		switch (estado) {
 			case 0:
 				lexema = "";
-				c = next_char();
-				if (isspace(c)) {
+				_char = next_char();
+				if (isspace(_char)) {
 					estado = 0;
-				} else if (isalpha(c))	{
+				} else if (isalpha(_char))	{
 					estado = 1;
-				} else if (isdigit(c)) {
+				} else if (isdigit(_char)) {
 					estado = 3;
-				} else if (c == '"') {
+				} else if (_char == '"') {
 					estado = 5;
-				} else if (c == '/') {
+				} else if (_char == '/') {
 					estado = 7;
-				} else if (c == '{'){
+				} else if (_char == '{'){
 					estado = 10;
-				} else if (c == '=') {
+				} else if (_char == '=') {
 					estado = 13;
-				} else if (c == '<') {
+				} else if (_char == '<') {
 					estado = 16;
-				} else if (c == '>') {
+				} else if (_char == '>') {
 					estado = 20;
-				} else if (c == '+' || c == '-' || c == '*' || c == ',' || c == ';' || c == ':' || c == '(' || c == ')' ) {
+				} else if (_char == '+' || _char == '-' || _char == '*' || _char == ',' || _char == ';' || _char == ':' || _char == '(' || _char == ')' ) {
 					estado = 23;
-				} else if (c == -1) {
+				} else if (_char == -1) {
 					return tkEOF;
 				} else {
-                    list_erros.push_back(Error(linha, coluna, ER_CARACTERE_INVALIDO, c));
+                    list_erros.push_back(Error(linha, coluna, ER_CARACTERE_INVALIDO, _char));
 				}
 				break;
 			case 1:
-				c = next_char();
-				if (isalpha(c) || isdigit(c) || c == '_') {
+				_char = next_char();
+				if (isalpha(_char) || isdigit(_char) || _char == '_') {
 					estado = 1;
 				} else {
 					estado = 2;
@@ -118,15 +119,14 @@ Token Lexico::next_token() {
 				break;
 			case 2:
 				prev_char();
-				lexema.erase(lexema.size()-1);
 				tk = is_keyword(lexema);
 				if (tk._id == 0) {
 					insert_symbol(tk, lexema, linha+1, (coluna+1)-(lexema.size()-1));
 				} ;
 				return tk;
 			case 3:
-				c = next_char();
-				if (isdigit(c)) {
+				_char = next_char();
+				if (isdigit(_char)) {
 					estado = 3;
 				} else {
 					estado = 4;
@@ -135,14 +135,13 @@ Token Lexico::next_token() {
 			case 4:
 				prev_char();
 				tk = search_token("tkConstante", BY_TOKEN);
-				lexema.erase(lexema.size() -1);
 				insert_symbol(tk, lexema, linha+1, (coluna+1)-(lexema.size()-1));
 				return tk;
 			case 5:
-				c = next_char();				
-				if (c == '"') {
+				_char = next_char();				
+				if (_char == '"') {
 					estado = 6;
-				} else if (c == '\n') {
+				} else if (_char == '\n') {
 					estado = 0;
 					list_erros.push_back(Error(linha, source[linha].size()-lexema.size()+1, ER_LITERAL_NAO_FECHADO));
 				} else {
@@ -150,20 +149,22 @@ Token Lexico::next_token() {
 				}
 				break;
 			case 6:
+				lexema.erase(lexema.begin());
+				lexema.erase(lexema.end()-1);
 				tk = search_token("tkLiteral", BY_TOKEN);
 				insert_symbol(tk, lexema, linha+1, (coluna+1)-(lexema.size()-1));
 				return tk;
 			case 7:
-				c = next_char();
-				if (c == '*') {
+				_char = next_char();
+				if (_char == '*') {
 					estado = 8;
 				} else {
 					estado = 9; // ?
 				}
 				break;
 			case 8:
-				c = next_char();
-				if (c == '\n') {
+				_char = next_char();
+				if (_char == '\n') {
 					estado = 0;
 				}
 				break;
@@ -171,38 +172,42 @@ Token Lexico::next_token() {
                 prev_char();
 				return search_token("/", BY_PADRAO);
 			case 10:
-				c = next_char();
-				if (c == '*') {
+				_char = next_char();
+				if (_char == '*') {
 					estado = 11;
 					old_line = linha;
 					old_column = coluna;
 				} else {
 					prev_char();
 					estado = 0;
-					list_erros.push_back(Error(linha, coluna, ER_CARACTERE_INVALIDO, c));
+					list_erros.push_back(Error(linha, coluna, ER_CARACTERE_INVALIDO, _char));
 				}
 				break;
 			case 11:
-				c = next_char();
-				if (c == '*') {
+				_char = next_char();
+				if (_char == '*') {
 					estado = 12;
-				} else if (c == -1) {
+				} else if (_char == -1) {
 					estado = 0;
 					list_erros.push_back(Error(old_line, old_column, ER_COMENTARIO_NAO_FECHADO));
+					linha = old_line+1;
+					coluna = 0;
 				}
 				break;
 			case 12:
-				c = next_char();
-				if (c == '}') {
+				_char = next_char();
+				if (_char == '}') {
 					estado = 0;
+				} else if (_char == '*') {
+					estado = 12;
 				} else {
 					prev_char();
 					estado = 11;
 				}
 				break;
 			case 13:
-				c = next_char();
-				if (c == '=') {
+				_char = next_char();
+				if (_char == '=') {
 					estado = 14;
 				} else {
 					estado = 15;
@@ -214,10 +219,10 @@ Token Lexico::next_token() {
 				prev_char();
 				return search_token("=", BY_PADRAO);
 			case 16:
-				c = next_char();
-				if (c == '>') {
+				_char = next_char();
+				if (_char == '>') {
 					estado = 17;
-				} else if (c == '=') {
+				} else if (_char == '=') {
 					estado = 18;
 				} else {
 					estado = 19;
@@ -231,8 +236,8 @@ Token Lexico::next_token() {
 				prev_char();
 				return search_token("<", BY_PADRAO);
 			case 20:
-				c = next_char();
-				if (c == '=') {
+				_char = next_char();
+				if (_char == '=') {
 					estado = 21;
 				} else {
 					estado = 22;
@@ -248,10 +253,10 @@ Token Lexico::next_token() {
 			default:
 				break;
 		}
-		lexema.push_back(c);
+//		lexema.push_back(_char);
 
 #ifdef DEBUG
-		printf("%i- %i\n", estado, c);
+		printf("%i- %i\n", estado, _char);
 #endif
 	}
 }
@@ -276,9 +281,9 @@ bool Lexico::load_tokens() {
 	}
 	
 #ifdef DEBUG
-//	for(int i = 0; i < tokens.size(); i++) {
-//		cout << tokens[i].to_str() << endl;
-//	}
+	for(int i = 0; i < tokens.size(); i++) {
+		cout << tokens[i].to_str() << tokens[i].padrao << endl;
+	}
 #endif
 	
 	return true;
@@ -337,4 +342,94 @@ vector<Error> Lexico::get_line_errors(int line){
         }
     }
     return _errors;
+}
+
+Token Lexico::next_token_v1() {
+	char _char;
+	int old_line, old_column;
+	Token tk;
+	do {
+		lexema = "";
+		_char = next_char();
+		if (isspace(_char)) {
+			continue;
+		} else if (isalpha(_char))	{
+			do {
+				_char = next_char();
+			} while (isalpha(_char) || isdigit(_char) || _char == '_');
+			prev_char();
+			tk = is_keyword(lexema);
+
+			if (tk._id == 0) {
+				insert_symbol(tk, lexema, linha+1, (coluna+1)-(lexema.size()-1));
+			}
+			return tk;
+		} else if (isdigit(_char)) {
+			do {
+				_char = next_char();
+			} while (isdigit(_char));
+			prev_char();
+			tk = search_token("tkConstante", BY_TOKEN);
+			insert_symbol(tk, lexema, linha+1, (coluna+1)-(lexema.size()-1));
+			return tk;
+		} else if (_char == '"') {
+			do {
+				_char = next_char();
+			} while (_char != '"' && _char != '\n');
+			if (_char == '"') {
+				lexema.erase(lexema.begin());
+				lexema.erase(lexema.end()-1);
+				tk = search_token("tkLiteral", BY_TOKEN);
+				insert_symbol(tk, lexema, linha+1, (coluna+1)-(lexema.size()-1));
+				return tk;
+			} else {
+				list_erros.push_back(Error(linha, source[linha].size()-lexema.size()+1, ER_LITERAL_NAO_FECHADO));
+				continue;
+			}
+		} else if (_char == '/') {
+			_char = next_char();
+			if (_char == '*') {
+				do {
+					_char = next_char();
+				} while (_char != '\n');
+				continue;
+			} else {
+				prev_char();
+				return search_token(lexema, BY_PADRAO);
+			}
+		} else if (_char == '{'){
+			_char = next_char();
+			if (_char == '*') {
+			} else {
+				list_erros.push_back(Error(linha, coluna, ER_CARACTERE_INVALIDO, _char));
+				continue;
+			}
+		} else if (_char == '=') {
+			_char = next_char();
+			if (_char != '=') {
+				prev_char();
+			}
+			return search_token(lexema, BY_PADRAO);
+		} else if (_char == '<') {
+			_char = next_char();
+			if (_char != '>' && _char != '=') {
+				prev_char();
+			}
+			return search_token(lexema, BY_PADRAO);
+		} else if (_char == '>') {
+			_char = next_char();
+			if (_char != '=') {
+				prev_char();
+			}
+			return search_token(lexema, BY_PADRAO);			
+		} else if (_char == '+' || _char == '-' || _char == '*' || _char == ',' || _char == ';' || _char == ':' || _char == '(' || _char == ')' ) {
+			return search_token(lexema, BY_PADRAO);
+		} else if (_char == -1) {
+			return tkEOF;
+		} else {
+			list_erros.push_back(Error(linha, coluna, ER_CARACTERE_INVALIDO, _char));
+		}
+	} while (_char != -1);
+	
+	return Token();
 }
