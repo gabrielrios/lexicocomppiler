@@ -316,8 +316,10 @@ bool Lexico::insert_symbol(Token tk, string lexema, int linha, int coluna) {
 	pos_sym = find_symbol(lexema);
 	if (pos_sym == -1) {
 		table_symbols.push_back(Symbol(tk, lexema, linha, coluna));
+		last_symbol_position = table_symbols.size()-1;
 	} else {
 		table_symbols[pos_sym].add_position(linha, coluna);
+		last_symbol_position = pos_sym;
 	}
 	return true;
 }

@@ -40,5 +40,7 @@ bool Token::is_null() {
 string Token::to_str() {
 //	stringstream tk_str;
 //	tk_str << "#" << _id << " " << alias;
-	return alias;
+	char format[100];
+	sprintf(format, "%-16s %4d", alias.c_str(), _id);
+	return string(format);
 }

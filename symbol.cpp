@@ -20,7 +20,10 @@ string Symbol::to_str() {
 	for (int i = 0; i < pares.size(); i++) {
 		pares_str += pares[i].to_str();
 	}
-	return token.to_str() + " | " + lexema + " | " + pares_str;
+	char format[200];
+	sprintf(format, "%-16s  %-26s  ", token.alias.c_str(), lexema.c_str());
+	//return token.to_str() + " | " + lexema + " | " + pares_str;
+	return string(format) + " " + pares_str;
 }
 
 void Symbol::add_position(int linha, int coluna) {

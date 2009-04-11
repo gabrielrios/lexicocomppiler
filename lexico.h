@@ -33,6 +33,7 @@ public:
 	vector<string> source;
 	int estado;
 	int last_error_line;
+	int last_symbol_position;
 	vector<Symbol> table_symbols;
 	vector<Token> tokens;
 	vector<Error> list_erros;
