@@ -51,6 +51,8 @@ public:
 	char prev_char(); // pega o caractere anterior
 	Token is_keyword(string lexema); // verifica se é uma palavra-chave e retorna o token da mesma, ou tkIdentificador se não for
 	vector<Error> get_line_errors(int line);
+	bool print_file_symbol();
+	bool print_file_errors();
 };
 
 #endif

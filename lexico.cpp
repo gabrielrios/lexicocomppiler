@@ -9,6 +9,7 @@
 
 #include "lexico.h"
 #include <algorithm>
+#include <fstream>
 //#define DEBUG
 
 char to_lower (const char c) {
@@ -35,7 +36,7 @@ Lexico::Lexico(string source_path) {
 		str.push_back('\n');
 		string::size_type st;
 		while ((st = str.find('\t')) != string::npos){
-            str.replace(st, st+1, "    ");
+            str.replace(st, st+1, "  ");
         }
 		source.push_back(str);
 	}
@@ -342,6 +343,59 @@ vector<Error> Lexico::get_line_errors(int line){
         }
     }
     return _errors;
+}
+
+bool Lexico::print_file_symbol(){
+    fstream file_symbols;
+    char format[10];
+    
+    file_symbols.open("file_symbols.txt", ios_base::out);
+    
+    file_symbols << "Pos	    Token	          Lexema	                   Pares (LL,CC) onde LL=linha e CC=coluna" << endl;
+	file_symbols << "-----	----------------  --------------------------   ---------------------------------------" << endl;
+	
+	for (int i = 0; i < table_symbols.size(); i++) {
+		sprintf(format, "%5d", i);
+		file_symbols << format << "   " <<  table_symbols[i].to_str() << endl;
+	}
+	return true;
+}
+
+bool Lexico::print_file_errors(){
+    vector<Error> errors;
+    char format[10];
+	int linha = -1;
+	fstream file_errors;
+	
+	file_errors.open("file_errors.txt", ios_base::out);
+	
+    for(int i = 0; i < source.size(); i++){
+        sprintf(format, "%5d ", i);
+        file_errors << format;
+        errors = get_line_errors(i);
+        if (errors.empty()) {
+            file_errors << source[i];
+        }else{
+            for(int j = 0; j < errors.size(); j++){
+                file_errors << source[i];
+                sprintf(format, "%5c ", ' ');
+                file_errors << format;
+                for (int x = errors[j].coluna-1; x >= 0; x--)
+					file_errors << "-";
+				file_errors << "^ " << endl;
+				file_errors << format;
+				file_errors << "Erro léxico na linha " << errors[j].linha << " coluna " << errors[j].coluna << ": ";
+				if(errors[j].erro==ER_COMENTARIO_NAO_FECHADO){
+                    file_errors << "Comentário não fechado" << endl;
+                }else if(errors[j].erro==ER_LITERAL_NAO_FECHADO){
+                    file_errors << "Literal não fechado" << endl;
+                }else {
+                    file_errors << "Caractere inválido `" << errors[j].invalido << "'" <<  endl;
+                }
+            }
+        }
+    }
+	file_errors << endl;
 }
 
 Token Lexico::next_token_v1() {
