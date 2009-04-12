@@ -400,6 +400,20 @@ Token Lexico::next_token_v1() {
 		} else if (_char == '{'){
 			_char = next_char();
 			if (_char == '*') {
+				old_line = linha;
+				old_column = coluna;
+				char old_char;
+				do {
+					old_char = _char;
+					_char = next_char();
+					if (_char == -1) {
+						list_erros.push_back(Error(old_line, old_column, ER_COMENTARIO_NAO_FECHADO, _char));
+						linha = old_line + 1;
+						coluna = 0;
+						break;
+					}
+				} while(!(old_char == '*' && _char == '}'));
+				continue;
 			} else {
 				list_erros.push_back(Error(linha, coluna, ER_CARACTERE_INVALIDO, _char));
 				continue;
