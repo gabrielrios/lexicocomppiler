@@ -180,7 +180,7 @@ Token Lexico::next_token_v2() {
 					old_line = linha;
 					old_column = coluna;
 				} else {
-					prev_char();
+					_char = prev_char();
 					estado = 0;
 					list_erros.push_back(Error(linha, coluna, ER_CARACTERE_INVALIDO, _char));
 				}
@@ -381,13 +381,15 @@ bool Lexico::print_file_errors(){
 	file_errors << "----- -----------------------------------------------------" << endl;
 	
     for(int i = 0; i < source.size(); i++){
-        sprintf(format, "%5d ", i+1);
-        file_errors << format;
         errors = get_line_errors(i);
         if (errors.empty()) {
+			sprintf(format, "%5d ", i+1);
+			file_errors << format;
             file_errors << source[i];
         }else{
             for(int j = 0; j < errors.size(); j++){
+				sprintf(format, "%5d ", i+1);
+				file_errors << format;
                 file_errors << source[i];
                 sprintf(format, "%5c ", ' ');
                 file_errors << format;
@@ -481,6 +483,7 @@ Token Lexico::next_token_v1() {
 				} while(!(old_char == '*' && _char == '}'));
 				continue;
 			} else {
+				_char = prev_char();
 				list_erros.push_back(Error(linha, coluna, ER_CARACTERE_INVALIDO, _char));
 				continue;
 			}
