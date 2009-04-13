@@ -1,0 +1,211 @@
+Lista de tokens por linha
+
+Arquivo de entrada: teste2.ptg
+
+
+Linha  Token             Cod  Pos lexema
+-----  ----------------  ---  ----------
+    1  tkInicio           10
+    2  tkInteiro           4
+       tkDoisPontos        9
+       tkIdentificador     0    0
+       tkVirgula           5
+       tkIdentificador     0    1
+       tkVirgula           5
+       tkIdentificador     0    2
+       tkPontoVirgula      6
+    3  tkInteiro           4
+       tkDoisPontos        9
+       tkIdentificador     0    3
+       tkPontoVirgula      6
+    4  tkInteiro           4
+       tkDoisPontos        9
+       tkIdentificador     0    4
+       tkPontoVirgula      6
+    5  tkInteiro           4
+       tkDoisPontos        9
+       tkIdentificador     0    5
+       tkPontoVirgula      6
+    6  tkImprima          22
+       tkParenteseAbre     7
+       tkLiteral           1    6
+       tkParenteseFecha    8
+       tkPontoVirgula      6
+    7  tkLeia             21
+       tkParenteseAbre     7
+       tkIdentificador     0    0
+       tkParenteseFecha    8
+       tkPontoVirgula      6
+    8  tkImprima          22
+       tkParenteseAbre     7
+       tkLiteral           1    7
+       tkParenteseFecha    8
+       tkPontoVirgula      6
+    9  tkLeia             21
+       tkParenteseAbre     7
+       tkIdentificador     0    1
+       tkParenteseFecha    8
+       tkPontoVirgula      6
+   10  tkImprima          22
+       tkParenteseAbre     7
+       tkLiteral           1    8
+       tkParenteseFecha    8
+       tkPontoVirgula      6
+   11  tkLeia             21
+       tkParenteseAbre     7
+       tkIdentificador     0    2
+       tkParenteseFecha    8
+       tkPontoVirgula      6
+   12  tkSe               12
+       tkParenteseAbre     7
+       tkIdentificador     0    0
+       tkMaiorIgual       28
+       tkIdentificador     0    1
+       tkParenteseFecha    8
+       tkE                34
+       tkParenteseAbre     7
+       tkIdentificador     0    0
+       tkMaiorIgual       28
+       tkIdentificador     0    2
+       tkParenteseFecha    8
+       tkEntao            13
+   13  tkIdentificador     0    3
+       tkAtribuicao       31
+       tkIdentificador     0    0
+       tkPontoVirgula      6
+   14  tkSe               12
+       tkParenteseAbre     7
+       tkIdentificador     0    1
+       tkMenorIgual       29
+       tkIdentificador     0    2
+       tkParenteseFecha    8
+       tkEntao            13
+   15  tkIdentificador     0    4
+       tkAtribuicao       31
+       tkIdentificador     0    1
+       tkPontoVirgula      6
+   16  tkSenao            15
+   17  tkIdentificador     0    4
+       tkAtribuicao       31
+       tkIdentificador     0    2
+       tkPontoVirgula      6
+   18  tkFimSe            14
+   19  tkSenao            15
+       tkSe               12
+       tkParenteseAbre     7
+       tkIdentificador     0    1
+       tkMaiorIgual       28
+       tkIdentificador     0    0
+       tkParenteseFecha    8
+       tkE                34
+       tkParenteseAbre     7
+       tkIdentificador     0    1
+       tkMaiorIgual       28
+       tkIdentificador     0    2
+       tkParenteseFecha    8
+       tkEntao            13
+   20  tkIdentificador     0    3
+       tkAtribuicao       31
+       tkIdentificador     0    1
+       tkPontoVirgula      6
+   21  tkSe               12
+       tkParenteseAbre     7
+       tkIdentificador     0    0
+       tkMenorIgual       29
+       tkIdentificador     0    2
+       tkParenteseFecha    8
+       tkEntao            13
+   22  tkIdentificador     0    4
+       tkAtribuicao       31
+       tkIdentificador     0    0
+       tkPontoVirgula      6
+   23  tkSenao            15
+   24  tkIdentificador     0    4
+       tkAtribuicao       31
+       tkIdentificador     0    2
+       tkPontoVirgula      6
+   25  tkFimSe            14
+   26  tkSenao            15
+   27  tkIdentificador     0    3
+       tkAtribuicao       31
+       tkIdentificador     0    2
+       tkPontoVirgula      6
+   28  tkSe               12
+       tkParenteseAbre     7
+       tkIdentificador     0    0
+       tkMenorIgual       29
+       tkIdentificador     0    1
+       tkParenteseFecha    8
+       tkIdentificador     0    9
+       tkIdentificador     0   10
+   29  tkIdentificador     0    4
+       tkAtribuicao       31
+       tkIdentificador     0    0
+       tkPontoVirgula      6
+   30  tkSenao            15
+   31  tkIdentificador     0    4
+       tkAtribuicao       31
+       tkIdentificador     0    1
+       tkPontoVirgula      6
+   32  tkFimSe            14
+   33  tkFimSe            14
+   34  tkIdentificador     0    5
+       tkAtribuicao       31
+       tkParenteseAbre     7
+       tkIdentificador     0    0
+       tkMais             23
+       tkIdentificador     0    1
+       tkMais             23
+       tkIdentificador     0    2
+       tkParenteseFecha    8
+       tkDivisao          33
+       tkConstante         2   11
+       tkPontoVirgula      6
+   35  tkImprima          22
+       tkParenteseAbre     7
+       tkLiteral           1   12
+       tkParenteseFecha    8
+       tkPontoVirgula      6
+   36  tkImprima          22
+       tkParenteseAbre     7
+       tkIdentificador     0    3
+       tkParenteseFecha    8
+       tkPontoVirgula      6
+   37  tkImprima          22
+       tkParenteseAbre     7
+       tkLiteral           1   13
+       tkParenteseFecha    8
+       tkPontoVirgula      6
+   38  tkImprima          22
+       tkParenteseAbre     7
+       tkLiteral           1   14
+       tkParenteseFecha    8
+       tkPontoVirgula      6
+   39  tkImprima          22
+       tkParenteseAbre     7
+       tkIdentificador     0    5
+       tkParenteseFecha    8
+       tkPontoVirgula      6
+   40  tkImprima          22
+       tkParenteseAbre     7
+       tkLiteral           1   13
+       tkParenteseFecha    8
+       tkPontoVirgula      6
+   41  tkImprima          22
+       tkParenteseAbre     7
+       tkLiteral           1   15
+       tkParenteseFecha    8
+       tkPontoVirgula      6
+   42  tkImprima          22
+       tkParenteseAbre     7
+       tkIdentificador     0    4
+       tkParenteseFecha    8
+       tkPontoVirgula      6
+   43  tkImprima          22
+       tkParenteseAbre     7
+       tkLiteral           1   13
+       tkParenteseFecha    8
+       tkPontoVirgula      6
+   44  tkFim              11
+   45  tkEOF               3
+

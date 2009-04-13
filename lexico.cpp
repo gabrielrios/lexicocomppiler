@@ -28,7 +28,7 @@ Lexico::Lexico(string source_path) {
 		str.push_back('\n');
 		string::size_type st;
 		while ((st = str.find('\t')) != string::npos){
-            str.replace(st, st+1, "  ");
+            str.replace(st, 1, "  ");
         }
 		source.push_back(str);
 	}

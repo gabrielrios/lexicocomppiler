@@ -1,0 +1,23 @@
+Tabela de símbolos
+
+Arquivo de entrada: teste3.ptg
+
+
+Pos	    Token	          Lexema	                   Pares (LL,CC) onde LL=linha e CC=coluna
+-----	----------------  --------------------------   ---------------------------------------
+    0   tkIdentificador   Coment                       (1,4)(3,4)
+    1   tkIdentificador   rio                          (1,11)(3,11)
+    2   tkConstante       1                            (1,15)
+    3   tkConstante       3                            (3,15)
+    4   tkIdentificador   x                            (8,12)(11,9)(16,12)
+    5   tkIdentificador   y                            (8,15)(13,9)(16,14)
+    6   tkIdentificador   z                            (8,18)(15,9)(16,16)
+    7   tkIdentificador   float                        (9,42)
+    8   tkIdentificador   media                        (9,49)(16,3)(18,11)
+    9   tkLiteral         Digite um valor para x:      (10,13)
+   10   tkLiteral         Digite um valor para y:      (12,13)
+   11   tkLiteral         Digite um valor para z:      (14,13)
+   12   tkConstante       0                            (16,19)
+   13   tkConstante       33333333                     (16,21)
+   14   tkLiteral         Media =                      (17,12)
+   15   tkLiteral         \n                           (19,12)

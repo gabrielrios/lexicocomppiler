@@ -1,0 +1,68 @@
+Lista de tokens por linha
+
+Arquivo de entrada: teste1.ptg
+
+
+Linha  Token             Cod  Pos lexema
+-----  ----------------  ---  ----------
+    1  tkInicio           10
+    2  tkInteiro           4
+       tkDoisPontos        9
+       tkIdentificador     0    0
+       tkVirgula           5
+       tkIdentificador     0    1
+       tkPontoVirgula      6
+    3  tkImprima          22
+       tkParenteseAbre     7
+       tkLiteral           1    2
+       tkParenteseFecha    8
+       tkPontoVirgula      6
+    4  tkLeia             21
+       tkParenteseAbre     7
+       tkIdentificador     0    0
+       tkParenteseFecha    8
+       tkPontoVirgula      6
+    5  tkIdentificador     0    1
+       tkMenor            26
+       tkMenos            24
+       tkConstante         2    3
+       tkPontoVirgula      6
+    6  tkPara             16
+       tkIdentificador     0    4
+       tkDe               17
+       tkConstante         2    3
+       tkAte              18
+       tkIdentificador     0    0
+       tkIdentificador     0    5
+       tkIdentificador     0    6
+    7  tkIdentificador     0    1
+       tkMenor            26
+       tkMenos            24
+       tkIdentificador     0    1
+       tkMultiplicacao    32
+       tkIdentificador     0    4
+       tkPontoVirgula      6
+    8  tkFimPara          19
+    9  tkImprima          22
+       tkParenteseAbre     7
+       tkLiteral           1    7
+       tkParenteseFecha    8
+       tkPontoVirgula      6
+   10  tkImprima          22
+       tkParenteseAbre     7
+       tkIdentificador     0    0
+       tkParenteseFecha    8
+       tkPontoVirgula      6
+   11  tkImprima          22
+       tkParenteseAbre     7
+       tkLiteral           1    8
+       tkParenteseFecha    8
+       tkPontoVirgula      6
+   12  tkImprima          22
+       tkParenteseAbre     7
+       tkIdentificador     0    1
+       tkParenteseFecha    8
+       tkPontoVirgula      6
+   13  tkFim              11
+   14  tkEOF               3
+

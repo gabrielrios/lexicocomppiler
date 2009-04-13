@@ -1,0 +1,95 @@
+Lista de tokens por linha
+
+Arquivo de entrada: teste3.ptg
+
+
+Linha  Token             Cod  Pos lexema
+-----  ----------------  ---  ----------
+    1  tkDivisao          33
+       tkDivisao          33
+       tkIdentificador     0    0
+       tkIdentificador     0    1
+       tkConstante         2    2
+       tkDivisao          33
+       tkDivisao          33
+    3  tkParenteseAbre     7
+       tkMultiplicacao    32
+       tkIdentificador     0    0
+       tkIdentificador     0    1
+       tkConstante         2    3
+       tkMultiplicacao    32
+       tkParenteseFecha    8
+    7  tkInicio           10
+    8  tkInteiro           4
+       tkDoisPontos        9
+       tkIdentificador     0    4
+       tkVirgula           5
+       tkIdentificador     0    5
+       tkVirgula           5
+       tkIdentificador     0    6
+       tkPontoVirgula      6
+    9  tkIdentificador     0    7
+       tkDoisPontos        9
+       tkIdentificador     0    8
+       tkPontoVirgula      6
+   10  tkImprima          22
+       tkParenteseAbre     7
+       tkLiteral           1    9
+       tkParenteseFecha    8
+       tkPontoVirgula      6
+   11  tkLeia             21
+       tkParenteseAbre     7
+       tkIdentificador     0    4
+       tkParenteseFecha    8
+       tkPontoVirgula      6
+   12  tkImprima          22
+       tkParenteseAbre     7
+       tkLiteral           1   10
+       tkParenteseFecha    8
+       tkPontoVirgula      6
+   13  tkLeia             21
+       tkParenteseAbre     7
+       tkIdentificador     0    5
+       tkParenteseFecha    8
+       tkPontoVirgula      6
+   14  tkImprima          22
+       tkParenteseAbre     7
+       tkLiteral           1   11
+       tkParenteseFecha    8
+       tkPontoVirgula      6
+   15  tkLeia             21
+       tkParenteseAbre     7
+       tkIdentificador     0    6
+       tkParenteseFecha    8
+       tkPontoVirgula      6
+   16  tkIdentificador     0    8
+       tkAtribuicao       31
+       tkParenteseAbre     7
+       tkIdentificador     0    4
+       tkMais             23
+       tkIdentificador     0    5
+       tkMais             23
+       tkIdentificador     0    6
+       tkParenteseFecha    8
+       tkMultiplicacao    32
+       tkConstante         2   12
+       tkConstante         2   13
+       tkPontoVirgula      6
+   17  tkImprima          22
+       tkParenteseAbre     7
+       tkLiteral           1   14
+       tkParenteseFecha    8
+       tkPontoVirgula      6
+   18  tkImprima          22
+       tkParenteseAbre     7
+       tkIdentificador     0    8
+       tkParenteseFecha    8
+       tkPontoVirgula      6
+   19  tkImprima          22
+       tkParenteseAbre     7
+       tkLiteral           1   15
+       tkParenteseFecha    8
+       tkPontoVirgula      6
+   20  tkFim              11
+   21  tkEOF               3
+

@@ -1,0 +1,23 @@
+Tabela de símbolos
+
+Arquivo de entrada: teste2.ptg
+
+
+Pos	    Token	          Lexema	                   Pares (LL,CC) onde LL=linha e CC=coluna
+-----	----------------  --------------------------   ---------------------------------------
+    0   tkIdentificador   X                            (2,12)(7,9)(12,7)(12,16)(13,13)(19,16)(21,9)(22,15)(28,9)(29,15)(34,12)
+    1   tkIdentificador   Y                            (2,15)(9,9)(12,10)(14,9)(15,15)(19,13)(19,22)(20,13)(28,12)(31,15)(34,14)
+    2   tkIdentificador   Z                            (2,18)(11,9)(12,19)(14,12)(17,15)(19,25)(21,12)(24,15)(27,13)(34,16)
+    3   tkIdentificador   Maior                        (3,12)(13,5)(20,5)(27,5)(36,11)
+    4   tkIdentificador   Menor                        (4,12)(15,7)(17,7)(22,7)(24,7)(29,7)(31,7)(42,11)
+    5   tkIdentificador   Media                        (5,12)(34,3)(39,11)
+    6   tkLiteral         Digite um valor para X:      (6,13)
+    7   tkLiteral         Digite um valor para Y:      (8,13)
+    8   tkLiteral         Digite um valor para Z:      (10,13)
+    9   tkIdentificador   Ent                          (28,15)
+   10   tkIdentificador   o                            (28,19)
+   11   tkConstante       3                            (34,19)
+   12   tkLiteral         Maior =                      (35,12)
+   13   tkLiteral         \n                           (37,12)(40,12)(43,12)
+   14   tkLiteral         Media =                      (38,12)
+   15   tkLiteral         Menor =                      (41,12)

@@ -1,0 +1,34 @@
+Código com erros encontrados
+
+Arquivo de entrada: teste3.ptg
+
+
+Linha Código
+----- -----------------------------------------------------
+    1 // Comentário 1 //
+      ---------^ 
+      Erro léxico na linha 1 coluna 10: Caractere inválido `á'
+    2 {* Comentário 2 *}
+    3 (* Comentário 3 *)
+      ---------^ 
+      Erro léxico na linha 3 coluna 10: Caractere inválido `á'
+    4 /* Comentário 4 
+    5 /* Comentário 5
+    6 
+    7 inicio
+    8   inteiro: x, y, z;  /* Declaração de variáveis
+    9   {* Esse tipo de dado existe mesmo?? *} float: media;
+   10   imprima ("Digite um valor para x:");
+   11   leia (x);
+   12   imprima ("Digite um valor para y:");
+   13   leia (y);
+   14   imprima ("Digite um valor para z:");
+   15   leia (z);
+   16   media = (x+y+z)*0.33333333;
+      -------------------^ 
+      Erro léxico na linha 16 coluna 20: Caractere inválido `.'
+   17   imprima("Media = ");
+   18   imprima(media);
+   19   imprima("\n");
+   20 fim
+

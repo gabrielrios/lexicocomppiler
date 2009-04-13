@@ -41,7 +41,7 @@ int main (int argc, char * const argv[]) {
     	file_token << "Linha  Token             Cod  Pos lexema" << endl;
     	file_token << "-----  ----------------  ---  ----------" << endl;
     	do {
-    		tk = lexico->next_token(); //chamando o analisador léxico para que devolva um token
+    		tk = lexico->next_token();//chamando o analisador léxico para que devolva um token
     		if (lexico->linha > linha) {
     			linha = lexico->linha;
     			sprintf(format, "%5d  ", (linha+1));

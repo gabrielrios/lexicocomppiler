@@ -1,0 +1,16 @@
+Tabela de símbolos
+
+Arquivo de entrada: teste1.ptg
+
+
+Pos	    Token	          Lexema	                   Pares (LL,CC) onde LL=linha e CC=coluna
+-----	----------------  --------------------------   ---------------------------------------
+    0   tkIdentificador   n                            (2,13)(4,10)(6,20)(10,12)
+    1   tkIdentificador   fatorial                     (2,16)(5,4)(7,7)(7,19)(12,12)
+    2   tkLiteral         Digite um valor para n:      (3,14)
+    3   tkConstante       1                            (5,16)(6,14)
+    4   tkIdentificador   i                            (6,9)(7,30)
+    5   tkIdentificador   fa                           (6,22)
+    6   tkIdentificador   a                            (6,25)
+    7   tkLiteral         Fatorial (                   (9,13)
+    8   tkLiteral         ) =                          (11,13)

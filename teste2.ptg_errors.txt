@@ -1,0 +1,54 @@
+Código com erros encontrados
+
+Arquivo de entrada: teste2.ptg
+
+
+Linha Código
+----- -----------------------------------------------------
+    1 Inicio
+    2   Inteiro: X, Y, Z;
+    3   Inteiro: Maior;
+    4   Inteiro: Menor;
+    5   Inteiro: Media;
+    6   Imprima ("Digite um valor para X:");
+    7   Leia (X);
+    8   Imprima ("Digite um valor para Y:");
+    9   Leia (Y);
+   10   Imprima ("Digite um valor para Z:");
+   11   Leia (Z);
+   12   Se (X>=Y) E (X>=Z) Entao
+   13     Maior = X;
+   14     Se (Y<=Z) Entao
+   15       Menor = Y;
+   16     Senao 
+   17       Menor = Z;
+   18     Fim_Se
+   19   Senao Se (Y>=X) E (Y>=Z) Entao
+   20     Maior = Y;
+   21     Se (X<=Z) Entao
+   22       Menor = X;
+   23     Senao 
+   24       Menor = Z;
+   25     Fim_Se
+   26   Senao
+   27     Maior = Z;
+   28     Se (X<=Y) Então
+      -----------------^ 
+      Erro léxico na linha 28 coluna 18: Caractere inválido `ã'
+   29       Menor = X;
+   30     Senao 
+   31       Menor = Y;
+   32     Fim_Se
+   33   Fim_Se  
+   34   Media = (X+Y+Z)/3;
+   35   Imprima("Maior = ");
+   36   Imprima(Maior);
+   37   Imprima("\n");
+   38   Imprima("Media = ");
+   39   Imprima(Media);
+   40   Imprima("\n");
+   41   Imprima("Menor = ");
+   42   Imprima(Menor);
+   43   Imprima("\n");
+   44 Fim
+
