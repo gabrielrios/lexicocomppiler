@@ -23,22 +23,34 @@ int main (int argc, char * const argv[]) {
 	int linha = -1, versao; //auxilia na contagem das linhas do arquivo
 	stringstream output_name; //guarda o nome do arquivo de saÌda com a lista de tokens
 	
-	//caso n„o seja passado nome de arquivo por linha de comando
-	if (argc <= 1) {
-	   cout << "Digite o nome do arquivo de entrada:";
-	   cin >> source_name;
+	
+	// Tratamento dos parametros de linha de comando.
+	if (argc > 1 && ( string(argv[1]) == "-v1" || string(argv[1]) == "-v2")) { // Escolhendo a versão do analisador que vai ser usada.
+		versao = (string(argv[1]) == "-v1") ? 1 : 2;
+	} else if (string(argv[1]) == "--help" || string(argv[1]) == "-h") {	// Ajuda, mostra sintaxe da chamada do programa e os comandos disponivéis
+		cout << "Analisador Lexico de Portugol. Por Gabriel Rios e Hélder Almeida" << endl;
+		cout << "Uso: lexicocompiler [options] arquivo" << endl;
+		cout << "Opções:"<< endl;
+		cout << "\t -v1 \t\t Executa a versão 1 do analaisador"<< endl;
+		cout << "\t -v2 \t\t Executa a versão 1 do analaisador"<< endl;
+		return 0;
+	} else {
+		cout << "lexicocompiler: Parâmetros inválidos" << endl;
+		cout << "lexicocompiler: lexicocompiler --help para mais informações" << endl;
+		return 0;
 	}
 	
-	do {
-		cout << "Qual versão do analisador deseja utilizar?";
-		cin >> versao;
-	} while (versao != 1 && versao != 2);
+	//caso n„o seja passado nome de arquivo por linha de comando
+	if (argc < 3) {
+		cout << "Digite o nome do arquivo de entrada:";
+		cin >> source_name;
+	}
 	
 	//caso seja passado nome de arquivo por linha de comando, estes ser„o analisados
 	//a partir deste laÁo, que chama o analisador lÈxico atÈ o fim de cada arquivo
-	for(int j = 1; j < argc || !source_name.empty(); j++, source_name = ""){
+	for(int j = 2; j < argc || !source_name.empty(); j++, source_name = ""){
         
-    	if (argc > 1) {
+    	if (argc > 2) {
 			lexico = new Lexico(argv[j], versao);
 		} else {
 			lexico = new Lexico(source_name, versao);
@@ -73,16 +85,16 @@ int main (int argc, char * const argv[]) {
     	} while(tk != lexico->tkEOF) ;
     	
     	file_token << endl;
-    	file_token.close(); //fechando o arquivo de saÌda
+    	file_token.close(); //fechando o arquivo de saída
     	
-    	lexico->print_file_errors(); //imprimindo o arquivo com os erros no cÛdigo
+    	lexico->print_file_errors(); //imprimindo o arquivo com os erros no código
     	lexico->print_file_symbol(); //imprimindo a tabela de sÌmbolos
     	
     	output_name.str(""); //limpando o nome do arquivo de saÌda para o prÛximo
     }
     
     cout << "\tOs arquivos:\n";
-    for(int j = 1; j < argc; j++){
+    for(int j = 2; j < argc; j++){
         cout << "\t\t" << argv[j] << endl;
     }
     cout << "\tforam tratados pelo analisador lÈxico." << endl << endl;
