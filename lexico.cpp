@@ -9,14 +9,15 @@ char to_lower (const char c) {
 
 using namespace std;
 
-Lexico::Lexico(string source_path) {
+Lexico::Lexico(string source_path, int _versao) {
 	fstream _source;
 	estado = linha = last_error_line = 0;
 	coluna = -1;
+	versao = _versao;
 	file_name << source_path;
 	_source.open(source_path.c_str(), ios_base::in);
 	if (!_source) {
-		cerr << "Erro ao abrir o cÃ³digo fonte" << endl;
+		cerr << "Erro ao abrir o câˆšâ‰¥digo fonte" << endl;
 		exit(-1);
 	}
 	if (!load_tokens()) {
@@ -31,6 +32,14 @@ Lexico::Lexico(string source_path) {
             str.replace(st, 1, "  ");
         }
 		source.push_back(str);
+	}
+}
+
+Token Lexico::next_token() {
+	if (versao == 1) {
+		return next_token_v1();
+	} else {
+		return next_token_v2();
 	}
 }
 
@@ -66,7 +75,7 @@ Token Lexico::is_keyword(string lexema) {
 	return tmp;
 }
 
-Token Lexico::next_token() {
+Token Lexico::next_token_v2() {
 	Token tk;
 	int old_line, old_column;
 	char _char;
@@ -345,8 +354,8 @@ bool Lexico::print_file_symbol(){
     
     file_symbols.open(output_name.str().c_str(), ios_base::out);
 
-    file_symbols << "Tabela de símbolos" << endl << endl;
-    file_symbols << "Arquivo de entrada: " << file_name.str() << endl << endl << endl;
+    file_symbols << "Tabela de sÃŒmbolos" << endl << endl;
+    file_symbols << "Arquivo de entrada (versÃ£o " << versao << "): " << file_name.str() << endl << endl << endl;
     file_symbols << "Pos	    Token	          Lexema	                   Pares (LL,CC) onde LL=linha e CC=coluna" << endl;
 	file_symbols << "-----	----------------  --------------------------   ---------------------------------------" << endl;
 	
@@ -360,16 +369,15 @@ bool Lexico::print_file_symbol(){
 bool Lexico::print_file_errors(){
     vector<Error> errors;
     char format[10];
-	int linha = -1;
 	fstream file_errors;
 	stringstream output_name;
     output_name << file_name.str() << "_errors.txt";
 	
 	file_errors.open(output_name.str().c_str(), ios_base::out);
 	
-	file_errors << "Código com erros encontrados" << endl << endl;
-	file_errors << "Arquivo de entrada: " << file_name.str() << endl << endl << endl;
-	file_errors << "Linha Código" << endl;
+	file_errors << "CÃ›digo com erros encontrados" << endl << endl;
+	file_errors << "Arquivo de entrada (versÃ£o " << versao << "): " << file_name.str() << endl << endl << endl;
+	file_errors << "Linha CÃ›digo" << endl;
 	file_errors << "----- -----------------------------------------------------" << endl;
 	
     for(int i = 0; i < source.size(); i++){
@@ -387,18 +395,19 @@ bool Lexico::print_file_errors(){
 					file_errors << "-";
 				file_errors << "^ " << endl;
 				file_errors << format;
-				file_errors << "Erro léxico na linha " << errors[j].linha+1 << " coluna " << errors[j].coluna+1 << ": ";
+				file_errors << "Erro lÃˆxico na linha " << errors[j].linha+1 << " coluna " << errors[j].coluna+1 << ": ";
 				if(errors[j].erro==ER_COMENTARIO_NAO_FECHADO){
-                    file_errors << "Comentário não fechado" << endl;
+                    file_errors << "ComentÂ·rio nâ€žo fechado" << endl;
                 }else if(errors[j].erro==ER_LITERAL_NAO_FECHADO){
-                    file_errors << "Literal não fechado" << endl;
+                    file_errors << "Literal nâ€žo fechado" << endl;
                 }else {
-                    file_errors << "Caractere inválido `" << errors[j].invalido << "'" <<  endl;
+                    file_errors << "Caractere invÂ·lido `" << errors[j].invalido << "'" <<  endl;
                 }
             }
         }
     }
 	file_errors << endl;
+	return true;
 }
 
 Token Lexico::next_token_v1() {

@@ -8,28 +8,36 @@
 using namespace std;
 
 int main (int argc, char * const argv[]) {
-	Lexico *lexico; //inst‚ncia da classe LÈxico, que contÈm o mÈtodo do analisador lÈxico
-	Token tk; //inst‚ncia do objeto token
-	fstream file_token; //usado para abrir o arquivo com o cÛdigo fonte
+	Lexico *lexico; //inst‚Äöncia da classe L√àxico, que cont√àm o m√àtodo do analisador l√àxico
+	Token tk; //inst‚Äöncia do objeto token
+	fstream file_token; //usado para abrir o arquivo com o c√õdigo fonte
     char format[10]; //para formatar os dados a serem impressos no arquivo
-    string source_name; //guarda o nome do arquivo com o cÛdigo fonte, quando n„o passado por linha de comando
-	int linha = -1; //auxilia na contagem das linhas do arquivo
-	stringstream output_name; //guarda o nome do arquivo de saÌda com a lista de tokens
+    string source_name; //guarda o nome do arquivo com o c√õdigo fonte, quando n‚Äûo passado por linha de comando
+	int linha = -1, versao; //auxilia na contagem das linhas do arquivo
+	stringstream output_name; //guarda o nome do arquivo de sa√åda com a lista de tokens
 	
-	//caso n„o seja passado nome de arquivo por linha de comando
+	//caso n‚Äûo seja passado nome de arquivo por linha de comando
 	if (argc <= 1) {
 	   cout << "Digite o nome do arquivo de entrada:";
 	   cin >> source_name;
 	}
-    cout << source_name.empty();
-	//caso seja passado nome de arquivo por linha de comando, estes ser„o analisados
-	//a partir deste laÁo, que chama o analisador lÈxico atÈ o fim de cada arquivo
+	
+	do {
+		cout << "Qual vers√£o do analisador deseja utilizar?";
+		cin >> versao;
+	} while (versao != 1 && versao != 2);
+	
+	//caso seja passado nome de arquivo por linha de comando, estes ser‚Äûo analisados
+	//a partir deste la√Åo, que chama o analisador l√àxico at√à o fim de cada arquivo
 	for(int j = 1; j < argc || !source_name.empty(); j++, source_name = ""){
         
-    	if (argc > 1){lexico = new Lexico(argv[j]);}
-    	else{lexico = new Lexico(source_name);}
+    	if (argc > 1) {
+			lexico = new Lexico(argv[j], versao);
+		} else {
+			lexico = new Lexico(source_name, versao);
+		}
         
-        //definindo o nome do arquivo de saÌda
+        //definindo o nome do arquivo de sa√åda
     	output_name << lexico->file_name.str() << "_tokens.txt";
     	
     	//abrindo o arquivo para escrita
@@ -37,40 +45,40 @@ int main (int argc, char * const argv[]) {
     	
     	linha = -1;
     	file_token << "Lista de tokens por linha" << endl << endl;
-    	file_token << "Arquivo de entrada: " << lexico->file_name.str() << endl << endl << endl;
+    	file_token << "Arquivo de entrada (vers√£o " << versao << "): " << lexico->file_name.str() << endl << endl << endl;
     	file_token << "Linha  Token             Cod  Pos lexema" << endl;
     	file_token << "-----  ----------------  ---  ----------" << endl;
     	do {
-    		tk = lexico->next_token();//chamando o analisador lÈxico para que devolva um token
+    		tk = lexico->next_token();//chamando o analisador l√àxico para que devolva um token
     		if (lexico->linha > linha) {
     			linha = lexico->linha;
     			sprintf(format, "%5d  ", (linha+1));
     		} else {
     			sprintf(format, "%5c  ", ' ');
     		}
-    		file_token << format; //colocando o n˙mero da linha ou espaÁo em branco
-    		file_token << tk.to_str(); //imprimindo o token retornado com o cÛdigo
+    		file_token << format; //colocando o nÀômero da linha ou espa√Åo em branco
+    		file_token << tk.to_str(); //imprimindo o token retornado com o c√õdigo
     		if (tk.alias == "tkIdentificador" || tk.alias == "tkConstante" || tk.alias == "tkLiteral") {
     			sprintf(format, "%5d", lexico->last_symbol_position); 
-    			file_token << format; //imprimindo a posiÁ„o do token na tabela de sÌmbolos
+    			file_token << format; //imprimindo a posi√Å‚Äûo do token na tabela de s√åmbolos
     		}
     		file_token << endl;
     	} while(tk != lexico->tkEOF) ;
     	
     	file_token << endl;
-    	file_token.close(); //fechando o arquivo de saÌda
+    	file_token.close(); //fechando o arquivo de sa√åda
     	
-    	lexico->print_file_errors(); //imprimindo o arquivo com os erros no cÛdigo
-    	lexico->print_file_symbol(); //imprimindo a tabela de sÌmbolos
+    	lexico->print_file_errors(); //imprimindo o arquivo com os erros no c√õdigo
+    	lexico->print_file_symbol(); //imprimindo a tabela de s√åmbolos
     	
-    	output_name.str(""); //limpando o nome do arquivo de saÌda para o prÛximo
+    	output_name.str(""); //limpando o nome do arquivo de sa√åda para o pr√õximo
     }
     
     cout << "\tOs arquivos:\n";
     for(int j = 1; j < argc; j++){
         cout << "\t\t" << argv[j] << endl;
     }
-    cout << "\tforam tratados pelo analisador lÈxico." << endl << endl;
+    cout << "\tforam tratados pelo analisador l√àxico." << endl << endl;
     
     system("pause");
     return 0;
