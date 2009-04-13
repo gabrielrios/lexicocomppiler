@@ -12,6 +12,7 @@
 
 #include <vector>
 #include <string>
+#include <sstream>
 #include <iostream>
 #include <fstream>
 #include "token.h"
@@ -29,7 +30,7 @@ class Lexico {
 public:
 	int linha, coluna;
 	string lexema; //acumulador do lexema;
-	//fstream source;
+	stringstream file_name;
 	vector<string> source;
 	int estado;
 	int last_error_line;

@@ -10,6 +10,7 @@
 #include "lexico.h"
 #include <algorithm>
 #include <fstream>
+#include <sstream>
 //#define DEBUG
 
 char to_lower (const char c) {
@@ -22,6 +23,7 @@ Lexico::Lexico(string source_path) {
 	fstream _source;
 	estado = linha = last_error_line = 0;
 	coluna = -1;
+	file_name << source_path;
 	_source.open(source_path.c_str(), ios_base::in);
 	if (!_source) {
 		cerr << "Erro ao abrir o cÃ³digo fonte" << endl;
@@ -153,7 +155,7 @@ Token Lexico::next_token() {
 				lexema.erase(lexema.begin());
 				lexema.erase(lexema.end()-1);
 				tk = search_token("tkLiteral", BY_TOKEN);
-				insert_symbol(tk, lexema, linha+1, (coluna+1)-(lexema.size()-1));
+				insert_symbol(tk, lexema, linha+1, coluna-(lexema.size()-1));
 				return tk;
 			case 7:
 				_char = next_char();
@@ -348,9 +350,13 @@ vector<Error> Lexico::get_line_errors(int line){
 bool Lexico::print_file_symbol(){
     fstream file_symbols;
     char format[10];
+    stringstream output_name;
+    output_name << file_name.str() << "_simbolos.txt";
     
-    file_symbols.open("file_symbols.txt", ios_base::out);
-    
+    file_symbols.open(output_name.str().c_str(), ios_base::out);
+
+    file_symbols << "Tabela de símbolos" << endl << endl;
+    file_symbols << "Arquivo de entrada: " << file_name.str() << endl << endl << endl;
     file_symbols << "Pos	    Token	          Lexema	                   Pares (LL,CC) onde LL=linha e CC=coluna" << endl;
 	file_symbols << "-----	----------------  --------------------------   ---------------------------------------" << endl;
 	
@@ -366,11 +372,18 @@ bool Lexico::print_file_errors(){
     char format[10];
 	int linha = -1;
 	fstream file_errors;
+	stringstream output_name;
+    output_name << file_name.str() << "_errors.txt";
 	
-	file_errors.open("file_errors.txt", ios_base::out);
+	file_errors.open(output_name.str().c_str(), ios_base::out);
+	
+	file_errors << "Código com erros encontrados" << endl << endl;
+	file_errors << "Arquivo de entrada: " << file_name.str() << endl << endl << endl;
+	file_errors << "Linha Código" << endl;
+	file_errors << "----- -----------------------------------------------------" << endl;
 	
     for(int i = 0; i < source.size(); i++){
-        sprintf(format, "%5d ", i);
+        sprintf(format, "%5d ", i+1);
         file_errors << format;
         errors = get_line_errors(i);
         if (errors.empty()) {
@@ -384,7 +397,7 @@ bool Lexico::print_file_errors(){
 					file_errors << "-";
 				file_errors << "^ " << endl;
 				file_errors << format;
-				file_errors << "Erro léxico na linha " << errors[j].linha << " coluna " << errors[j].coluna << ": ";
+				file_errors << "Erro léxico na linha " << errors[j].linha+1 << " coluna " << errors[j].coluna+1 << ": ";
 				if(errors[j].erro==ER_COMENTARIO_NAO_FECHADO){
                     file_errors << "Comentário não fechado" << endl;
                 }else if(errors[j].erro==ER_LITERAL_NAO_FECHADO){
