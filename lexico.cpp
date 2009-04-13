@@ -1,3 +1,11 @@
+/*
+ *  lexico.cpp
+ *
+ *  Created by Gabriel Rios & Hélder Almeida.
+ *  Copyright 2009. All rights reserved.
+ *
+ */
+
 #include "lexico.h"
 #include <algorithm>
 #include <fstream>

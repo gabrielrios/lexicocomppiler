@@ -1,3 +1,11 @@
+/*
+ *  position.h
+ *
+ *  Created by Gabriel Rios & HŽlder Almeida.
+ *  Copyright 2009 Home. All rights reserved.
+ *
+ */
+
 #include <sstream>
 #include <string>
 

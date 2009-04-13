@@ -1,3 +1,11 @@
+/*
+ *  symbol.h
+ *
+ *  Created by Gabriel Rios & HÃ©lder Almeida.
+ *  Copyright 2009 Home. All rights reserved.
+ *
+ */
+
 #include "token.h"
 #include "position.h"
 #include <string>
@@ -5,7 +13,7 @@
 
 using namespace std;
 
-//representa uma célula da tabela de símbolos
+//representa uma cÃˆlula da tabela de sÃŒmbolos
 class Symbol {
 public:
 	Token token;

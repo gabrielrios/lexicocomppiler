@@ -1,3 +1,11 @@
+/*
+ *  symbol.cpp
+ *
+ *  Created by Gabriel Rios & Hélder Almeida.
+ *  Copyright 2009 Home. All rights reserved.
+ *
+ */
+
 #include "symbol.h"
 
 Symbol::Symbol(Token tk, string lex, int linha, int coluna) {

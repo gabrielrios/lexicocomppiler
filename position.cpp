@@ -1,3 +1,11 @@
+/*
+ *  position.cpp
+ *
+ *  Created by Gabriel Rios & Hélder Almeida.
+ *  Copyright 2009 Home. All rights reserved.
+ *
+ */
+
 #include "position.h"
 
 Position::Position(int l, int c) {

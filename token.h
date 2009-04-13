@@ -1,3 +1,11 @@
+/*
+ *  token.h
+ *
+ *  Created by Gabriel Rios & HŽlder Almeida.
+ *  Copyright 2009 Home. All rights reserved.
+ *
+ */
+
 #ifndef TOKEN_H
 #define TOKEN_H
 
