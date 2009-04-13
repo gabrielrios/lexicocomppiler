@@ -11,23 +11,23 @@ int main (int argc, char * const argv[]) {
 	Lexico *lexico; //instância da classe Léxico, que contém o método do analisador léxico
 	Token tk; //instância do objeto token
 	fstream file_token; //usado para abrir o arquivo com o código fonte
-    char format[10], //para formatar os dados a serem impressos no arquivo
-         source_name = '\0'; //guarda o nome do arquivo com o código fonte, quando não passado por linha de comando
+    char format[10]; //para formatar os dados a serem impressos no arquivo
+    string source_name; //guarda o nome do arquivo com o código fonte, quando não passado por linha de comando
 	int linha = -1; //auxilia na contagem das linhas do arquivo
 	stringstream output_name; //guarda o nome do arquivo de saída com a lista de tokens
 	
 	//caso não seja passado nome de arquivo por linha de comando
 	if (argc <= 1) {
 	   cout << "Digite o nome do arquivo de entrada:";
-	   gets(&source_name);;
+	   cin >> source_name;
 	}
-	
+    cout << source_name.empty();
 	//caso seja passado nome de arquivo por linha de comando, estes serão analisados
 	//a partir deste laço, que chama o analisador léxico até o fim de cada arquivo
-	for(int j = 1; j < argc || source_name != '\0'; j++){
+	for(int j = 1; j < argc || !source_name.empty(); j++, source_name = ""){
         
     	if (argc > 1){lexico = new Lexico(argv[j]);}
-    	else{lexico = new Lexico(&source_name);}
+    	else{lexico = new Lexico(source_name);}
         
         //definindo o nome do arquivo de saída
     	output_name << lexico->file_name.str() << "_tokens.txt";
