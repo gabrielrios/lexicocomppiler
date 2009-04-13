@@ -1,12 +1,3 @@
-/*
- *  token.cpp
- *  lexicocompiler
- *
- *  Created by Gabriel Rios on 31/03/09.
- *  Copyright 2009 Home. All rights reserved.
- *
- */
-
 #include "token.h"
 #include <sstream>
 
@@ -36,10 +27,7 @@ bool Token::is_null() {
 	return alias == "null";
 }
 
-
 string Token::to_str() {
-//	stringstream tk_str;
-//	tk_str << "#" << _id << " " << alias;
 	char format[100];
 	sprintf(format, "%-16s %4d", alias.c_str(), _id);
 	return string(format);

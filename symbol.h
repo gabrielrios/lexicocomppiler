@@ -1,15 +1,3 @@
-/*
- *  symbol.h
- *  lexicocompiler
- *
- *  Created by Gabriel Rios on 07/04/09.
- *  Copyright 2009 Home. All rights reserved.
- *
- */
-
-#ifndef SYMBOL_H
-#define SYMBOL_H
-
 #include "token.h"
 #include "position.h"
 #include <string>
@@ -17,6 +5,7 @@
 
 using namespace std;
 
+//representa uma célula da tabela de símbolos
 class Symbol {
 public:
 	Token token;
@@ -26,5 +15,3 @@ public:
 	string to_str();
 	void add_position(int, int);
 };
-
-#endif

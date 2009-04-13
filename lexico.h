@@ -1,15 +1,5 @@
-/*
- *  lexico.h
- *  lexicocompiler
- *
- *  Created by Gabriel Rios on 07/04/09.
- *  Copyright 2009 Home. All rights reserved.
- *
- */
-
 #ifndef LEXICO_H
 #define LEXICO_H
-
 #include <vector>
 #include <string>
 #include <sstream>

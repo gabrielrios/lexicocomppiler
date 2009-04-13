@@ -1,12 +1,3 @@
-/*
- *  token.h
- *  lexicocompiler
- *
- *  Created by Gabriel Rios on 31/03/09.
- *  Copyright 2009 Home. All rights reserved.
- *
- */
-
 #ifndef TOKEN_H
 #define TOKEN_H
 
@@ -15,9 +6,9 @@ using namespace std;
 
 class Token {
 	public:
-		int _id;
+		int _id; // CÛdigo do token
 		string alias; // Nome do Token
-		string padrao; // Padr√£o reconhecido que gera o token
+		string padrao; // Padr„o reconhecido que gera o token
 	public:
 		Token();
 		Token(string var);
@@ -27,6 +18,4 @@ class Token {
 		bool is_null();
 		string to_str();
 };
-
-
 #endif

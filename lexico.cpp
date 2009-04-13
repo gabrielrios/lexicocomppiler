@@ -1,17 +1,7 @@
-/*
- *  lexico.cpp
- *  lexicocompiler
- *
- *  Created by Gabriel Rios on 07/04/09.
- *  Copyright 2009 Home. All rights reserved.
- *
- */
-
 #include "lexico.h"
 #include <algorithm>
 #include <fstream>
 #include <sstream>
-//#define DEBUG
 
 char to_lower (const char c) {
 	return tolower(c);
