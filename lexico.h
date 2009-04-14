@@ -57,9 +57,9 @@ public:
 	vector<Error> get_line_errors(int line); //retorna os erros da linha
 	bool print_file_symbol(); //imprime a tabela de símbolos
 	bool print_file_errors();  //imprime o arquivo de entrada com a marcação dos erros
-	bool is_alpha(char _char);
-	bool is_digit(char _char);
-	bool is_space(char _char);
+	bool is_alpha(char _char); //verifica se o caractere é uma letra a-zA-Z sem acento
+	bool is_digit(char _char); //verifica se o caractere é um dígito 0-9
+	bool is_space(char _char); //verifica se o caractere é um espaço ' ', '\n', '\t'
 };
 
 #endif

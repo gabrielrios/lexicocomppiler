@@ -32,7 +32,7 @@ Lexico::Lexico(string source_path, int _versao) {
 	file_name << source_path;
 	_source.open(source_path.c_str(), ios_base::in);
 	if (!_source) {
-		cerr << "Erro ao abrir o câˆšâ‰¥digo fonte" << endl;
+		cerr << "Erro ao abrir o código fonte" << endl;
 		exit(-1);
 	}
 	if (!load_tokens()) {
@@ -85,6 +85,8 @@ char Lexico::prev_char() {
 	return source[linha][coluna];
 }
 
+//verifica se o caractere está dentro dos valores da tabela ASCII
+//que correspondem às letras de a-z, 97-122
 bool Lexico::is_alpha(char _char){
     if(tolower(_char) > 96 && tolower(_char) < 123){
         return true;
@@ -92,6 +94,9 @@ bool Lexico::is_alpha(char _char){
         return false;
     }
 }
+
+//verifica se o caractere está dentro dos valores da tabela ASCII
+//que correspondem aos dígitos de 0-9, 48-57
 bool Lexico::is_digit(char _char){
     if(tolower(_char) > 47 && tolower(_char) < 58){
         return true;
@@ -99,6 +104,9 @@ bool Lexico::is_digit(char _char){
         return false;
     }
 }
+
+//verifica se o caractere representa algum valor da tabela ASCII
+//que corresponde a alguns dos dígitos ' ', '\n' e '\t', 32, 13 e 9
 bool Lexico::is_space(char _char){
     if(_char == ' ' || _char == 32 || _char == '\n' || _char == 13 || _char == '\t' || _char == 9){
         return true;
@@ -119,239 +127,31 @@ Token Lexico::is_keyword(string lexema) {
 	return tmp;
 }
 
-//executa a análise léxica versão 2, usando estados
-Token Lexico::next_token_v2() {
-	Token tk; //guarda o token a ser retornado
-	int old_line, old_column; //a linha e coluna onde o token foi iniciado
-	char _char; //guarda cada caractere a ser analisado
-	estado = 0; //o primeiro estado, estado inicial
-	while (1) {
-		switch (estado) {
-            //no estado 0 recebe-se o primeiro caractere para definir o token,
-            //após lê-lo identifica-se entre as opções abaixo para qual estado seguir
-			case 0:
-				lexema = "";
-				_char = next_char();
-				if (is_space(_char)) {
-					estado = 0;
-				} else if (is_alpha(_char))	{
-					estado = 1;
-				} else if (is_digit(_char)) {
-					estado = 3;
-				} else if (_char == '"') {
-					estado = 5;
-				} else if (_char == '/') {
-					estado = 7;
-				} else if (_char == '{'){
-					estado = 10;
-				} else if (_char == '=') {
-					estado = 13;
-				} else if (_char == '<') {
-					estado = 16;
-				} else if (_char == '>') {
-					estado = 20;
-				} else if (_char == '+' || _char == '-' || _char == '*' || _char == ',' || _char == ';' || _char == ':' || _char == '(' || _char == ')' ) {
-					estado = 23;
-				} else if (_char == -1) {
-					return tkEOF;
-				} else {
-                    //caso o caractere não seja válido adiciona um erro na lista de erros
-                    list_erros.push_back(Error(linha, coluna, ER_CARACTERE_INVALIDO, _char));
-				}
-				break;
-			//caso tenha encontrado uma letra no estado 0
-			//ou ter encontrado letra ou dígito no estado 1
-			case 1:
-				_char = next_char();
-				if (is_alpha(_char) || is_digit(_char) || _char == '_') {
-					estado = 1;
-				} else {
-					estado = 2;
-				}
-				break;
-			//caso tenha encontrado, no estado 1, algum caractere 
-            //que não possa entrar no padrão do identificador
-            //retorna o token identificador ou o token da palavra reservada
-			case 2:
-				prev_char();
-				tk = is_keyword(lexema);
-				if (tk._id == 0) {
-					insert_symbol(tk, lexema, linha+1, (coluna+1)-(lexema.size()-1));
-				} ;
-				return tk;
-			//caso tenha encontrado um dígito no estado 0
-			//continua neste estado até encontrar algum caractere que não seja dígito
-			//quando encontra segue para o estado 4
-			case 3:
-				_char = next_char();
-				if (isdigit(_char)) {
-					estado = 3;
-				} else {
-					estado = 4;
-				}
-				break;
-			//foi encontrado algum caractere diferente de dígito no estado 3
-            //retorna o token constante
-			case 4:
-				prev_char();
-				tk = search_token("tkConstante", BY_TOKEN);
-				insert_symbol(tk, lexema, linha+1, (coluna+1)-(lexema.size()-1));
-				return tk;
-			//quando encontra aspas duplas, definindo assim o início de um literal\
-			//segue para o estado 6 caso encontre outra aspas duplas
-			//segue para o estado 0 caso encontre final de linha, gerando um erro na lista de erros
-			//continua no estado 5 caso não encontre aspas duplas ou fim de linha
-			case 5:
-				_char = next_char();				
-				if (_char == '"') {
-					estado = 6;
-				} else if (_char == '\n') {
-					estado = 0;
-					list_erros.push_back(Error(linha, source[linha].size()-lexema.size()+1, ER_LITERAL_NAO_FECHADO));
-				} else {
-					estado = 5;
-				}
-				break;
-			//caso tenha encontrado aspas duplas no estado 5, finalizando o literal
-			//armazena o literal, sem as aspas, no lexema\
-			//retorna o token literal
-			case 6:
-				lexema.erase(lexema.begin());
-				lexema.erase(lexema.end()-1);
-				tk = search_token("tkLiteral", BY_TOKEN);
-				insert_symbol(tk, lexema, linha+1, coluna-(lexema.size()-1));
-				return tk;
-			//
-			case 7:
-				_char = next_char();
-				if (_char == '*') {
-					estado = 8;
-				} else {
-					estado = 9; // ?
-				}
-				break;
-			case 8:
-				_char = next_char();
-				if (_char == '\n') {
-					estado = 0;
-				}
-				break;
-			case 9:
-                prev_char();
-				return search_token("/", BY_PADRAO);
-			case 10:
-				_char = next_char();
-				if (_char == '*') {
-					estado = 11;
-					old_line = linha;
-					old_column = coluna;
-				} else {
-					_char = prev_char();
-					estado = 0;
-					list_erros.push_back(Error(linha, coluna, ER_CARACTERE_INVALIDO, _char));
-				}
-				break;
-			case 11:
-				_char = next_char();
-				if (_char == '*') {
-					estado = 12;
-				} else if (_char == -1) {
-					estado = 0;
-					list_erros.push_back(Error(old_line, old_column, ER_COMENTARIO_NAO_FECHADO));
-					linha = old_line+1;
-					coluna = 0;
-				}
-				break;
-			case 12:
-				_char = next_char();
-				if (_char == '}') {
-					estado = 0;
-				} else if (_char == '*') {
-					estado = 12;
-				} else {
-					prev_char();
-					estado = 11;
-				}
-				break;
-			case 13:
-				_char = next_char();
-				if (_char == '=') {
-					estado = 14;
-				} else {
-					estado = 15;
-				}
-				break;
-			case 14:
-				return search_token("==", BY_PADRAO);
-			case 15:
-				prev_char();
-				return search_token("=", BY_PADRAO);
-			case 16:
-				_char = next_char();
-				if (_char == '>') {
-					estado = 17;
-				} else if (_char == '=') {
-					estado = 18;
-				} else {
-					estado = 19;
-				}
-				break;
-			case 17:
-				return search_token("<>", BY_PADRAO);
-			case 18:
-				return search_token("<=", BY_PADRAO);
-			case 19:
-				prev_char();
-				return search_token("<", BY_PADRAO);
-			case 20:
-				_char = next_char();
-				if (_char == '=') {
-					estado = 21;
-				} else {
-					estado = 22;
-				}
-				break;
-			case 21:
-				return search_token(">=", BY_PADRAO);
-			case 22:
-				prev_char();
-				return search_token(">", BY_PADRAO);
-			case 23:
-				return search_token(lexema, BY_PADRAO);
-			default:
-				break;
-		}
-	}
-}
-
+//carrega a lista de tokens que está presente no arquivo "tokens_list.dat"
+//armazenando em um vetor de tokens
 bool Lexico::load_tokens() {
-	fstream tokens_list;
+	fstream tokens_list; 
 	string tmp_alias, tmp_padrao;
 	int count = 0;
 	
-	tokens_list.open("tokens_list.dat", ios_base::in); // TODO: mudar caminho do arquivo
+	tokens_list.open("tokens_list.dat", ios_base::in);
 	
 	if (!tokens_list) {
 		cerr << "Erro ao abrir o arquivo de tokens" << endl;
 		return false;
 	}
 	
+	//armaenando o "nome" do token e o seu padrão em variáveis auxiliares
 	while (tokens_list >> tmp_alias >> tmp_padrao) {
 		if (tmp_padrao == "#") {
 			tmp_padrao = "";
 		}
 		tokens.push_back(Token(tmp_alias, tmp_padrao, count++));
 	}
-	
-#ifdef DEBUG
-	for(int i = 0; i < tokens.size(); i++) {
-		cout << tokens[i].to_str() << tokens[i].padrao << endl;
-	}
-#endif
-	
 	return true;
 }
 
+	
 Token Lexico::search_token(string value, SearchMethod by) {
 	if (by == BY_PADRAO) { // Procura pelo lexema
 		for (int i = 0; i < tokens.size(); i++) {
@@ -407,6 +207,7 @@ vector<Error> Lexico::get_line_errors(int line){
     return _errors;
 }
 
+//gera o arquivo da tabela de símbolos
 bool Lexico::print_file_symbol(){
     fstream file_symbols;
     char format[10];
@@ -427,6 +228,7 @@ bool Lexico::print_file_symbol(){
 	return true;
 }
 
+//gera o arquivo com o código fonte e os erros encontrados
 bool Lexico::print_file_errors(){
     vector<Error> errors;
     char format[10];
@@ -576,4 +378,255 @@ Token Lexico::next_token_v1() {
 	} while (_char != -1);
 	
 	return Token();
+}
+
+//executa a análise léxica versão 2, usando estados
+Token Lexico::next_token_v2() {
+	Token tk; //guarda o token a ser retornado
+	int old_line, old_column; //a linha e coluna onde o token foi iniciado
+	char _char; //guarda cada caractere a ser analisado
+	estado = 0; //o primeiro estado, estado inicial
+	while (1) {
+		switch (estado) {
+            //no estado 0 recebe-se o primeiro caractere para definir o token,
+            //após lê-lo identifica-se entre as opções abaixo para qual estado seguir
+			case 0:
+				lexema = "";
+				_char = next_char();
+				if (is_space(_char)) {
+					estado = 0;
+				} else if (is_alpha(_char))	{
+					estado = 1;
+				} else if (is_digit(_char)) {
+					estado = 3;
+				} else if (_char == '"') {
+					estado = 5;
+				} else if (_char == '/') {
+					estado = 7;
+				} else if (_char == '{'){
+					estado = 10;
+				} else if (_char == '=') {
+					estado = 13;
+				} else if (_char == '<') {
+					estado = 16;
+				} else if (_char == '>') {
+					estado = 20;
+				} else if (_char == '+' || _char == '-' || _char == '*' || _char == ',' || _char == ';' || _char == ':' || _char == '(' || _char == ')' ) {
+					estado = 23;
+				} else if (_char == -1) {
+					return tkEOF;
+				} else {
+                    //caso o caractere não seja válido adiciona um erro na lista de erros
+                    list_erros.push_back(Error(linha, coluna, ER_CARACTERE_INVALIDO, _char));
+				}
+				break;
+			//caso tenha encontrado uma letra no estado 0
+			//ou ter encontrado letra ou dígito no estado 1
+			case 1:
+				_char = next_char();
+				if (is_alpha(_char) || is_digit(_char) || _char == '_') {
+					estado = 1;
+				} else {
+					estado = 2;
+				}
+				break;
+			//caso tenha encontrado, no estado 1, algum caractere 
+            //que não possa entrar no padrão do identificador
+            //retorna o token identificador ou o token da palavra reservada
+			case 2:
+				prev_char();
+				tk = is_keyword(lexema);
+				if (tk._id == 0) {
+					insert_symbol(tk, lexema, linha+1, (coluna+1)-(lexema.size()-1));
+				} ;
+				return tk;
+			//caso tenha encontrado um dígito no estado 0
+			//continua neste estado até encontrar algum caractere que não seja dígito
+			//quando encontra segue para o estado 4
+			case 3:
+				_char = next_char();
+				if (is_digit(_char)) {
+					estado = 3;
+				} else {
+					estado = 4;
+				}
+				break;
+			//foi encontrado algum caractere diferente de dígito no estado 3
+            //retorna o token constante
+			case 4:
+				prev_char();
+				tk = search_token("tkConstante", BY_TOKEN);
+				insert_symbol(tk, lexema, linha+1, (coluna+1)-(lexema.size()-1));
+				return tk;
+			//quando encontra aspas duplas, definindo assim o início de um literal\
+			//segue para o estado 6 caso encontre outra aspas duplas
+			//segue para o estado 0 caso encontre final de linha, gerando um erro na lista de erros
+			//continua no estado 5 caso não encontre aspas duplas ou fim de linha
+			case 5:
+				_char = next_char();				
+				if (_char == '"') {
+					estado = 6;
+				} else if (_char == '\n') {
+					estado = 0;
+					list_erros.push_back(Error(linha, source[linha].size()-lexema.size()+1, ER_LITERAL_NAO_FECHADO));
+				} else {
+					estado = 5;
+				}
+				break;
+			//caso tenha encontrado aspas duplas no estado 5, finalizando o literal
+			//armazena o literal, sem as aspas, no lexema\
+			//retorna o token literal
+			case 6:
+				lexema.erase(lexema.begin());
+				lexema.erase(lexema.end()-1);
+				tk = search_token("tkLiteral", BY_TOKEN);
+				insert_symbol(tk, lexema, linha+1, coluna-(lexema.size()-1));
+				return tk;
+			//se for encontrado uma barra / no estado 0, então chegamos neste estado
+            //que segue para o estado 8 caso encontre um asterisco no próximo caractere
+            //ou segue para o estado 9 caso encontre algum caractere diferente de asterisco
+			case 7:
+				_char = next_char();
+				if (_char == '*') {
+					estado = 8;
+				} else {
+					estado = 9; // ?
+				}
+				break;
+			//caso tenha encontrado um asterisco no estado 7, isso siginifica
+			//que foi encontrado uma abertura de comentário de única linha
+			//quando encontrar o fim de linha, \n, voltará ao estado inicial, 0
+			case 8:
+				_char = next_char();
+				if (_char == '\n') {
+					estado = 0;
+				}
+				break;
+			//caso não tenha encontrado um asterisco no estado 7, isso significa
+			//que a barra representa uma divisão, retornando assim o token correspondente
+			case 9:
+                prev_char();
+				return search_token("/", BY_PADRAO);
+			//se for encontrado um caractere abre chaves, {, no estado 0, então chegamos neste estado
+            //que segue para o estado 11 caso encontre um asterisco no próximo caractere
+            //ou segue para o estado 0 caso encontre algum caractere diferente de asterisco
+            //sinalizando erro por caractere inválido, {
+			case 10:
+				_char = next_char();
+				if (_char == '*') {
+					estado = 11;
+					old_line = linha;
+					old_column = coluna;
+				} else {
+					_char = prev_char();
+					estado = 0;
+					list_erros.push_back(Error(linha, coluna, ER_CARACTERE_INVALIDO, _char));
+				}
+				break;
+			//caso tenha encontrado um asterisco no estado 10, isso significa
+			//que o abre chaves representa abertura de comentário de bloco
+			//se encontrar um asterisco deve seguir para o estado 12
+			//se encontrar fim de arquivo, deve-se sinalizar erro por comentário não fechado
+			case 11:
+				_char = next_char();
+				if (_char == '*') {
+					estado = 12;
+				} else if (_char == -1) {
+					estado = 0;
+					list_erros.push_back(Error(old_line, old_column, ER_COMENTARIO_NAO_FECHADO));
+					linha = old_line+1;
+					coluna = 0;
+				}
+				break;
+			//caso tenha sido encontrado asterisco no estado 12, então chega-se a este estado
+			//se encontrar o caractere fecha aspas, }, significa que o comentário foi fechado e
+			//deve-se continuar a análise a partir do próximo caractere, voltando para o estado 0,
+			//mas se for encontrado outro asterisco, deve-se continuar no estado 12
+			//até encontrar o fecha aspas ou outro caractere, o que faz voltar para o estado 11
+			case 12:
+				_char = next_char();
+				if (_char == '}') {
+					estado = 0;
+				} else if (_char == '*') {
+					estado = 12;
+				} else {
+					prev_char();
+					estado = 11;
+				}
+				break;
+			//caso tenha encontrado sinal de igual no estado 0, chega-se neste estado
+			//aqui se encontrar um outro sinal de igual segue-se para o estado 14
+			//encontrando qualquer outro caractere segue para o estado 15
+			case 13:
+				_char = next_char();
+				if (_char == '=') {
+					estado = 14;
+				} else {
+					estado = 15;
+				}
+				break;
+			//caso tenha encontrado sinal de igual no estado 13, chega-se neste estado
+			//retornando o token igual
+			case 14:
+				return search_token("==", BY_PADRAO);
+			//caso não tenha achado sinal de igual no estado 13, retorna-se o token atribuição
+			case 15:
+				prev_char();
+				return search_token("=", BY_PADRAO);
+			//caso tenha encontrado sinal de menor no estado 0, chega-se neste estado
+			//aqui se encontrar um sinal de maior segue-se para o estado 17
+			//encontrando sinal de igual, segue-se para o estado 18
+			//e não encontrando ambos, segue para o estado 19
+			case 16:
+				_char = next_char();
+				if (_char == '>') {
+					estado = 17;
+				} else if (_char == '=') {
+					estado = 18;
+				} else {
+					estado = 19;
+				}
+				break;
+			//caso tenha achado sinal de maior no estado 16, então chega-se neste estado
+			//e retorna-se token diferente
+			case 17:
+				return search_token("<>", BY_PADRAO);
+			//caso tenha encontrado sinal de igual no estado 16, chega-se neste estado
+			//e retorna-se token menor ou igual
+			case 18:
+				return search_token("<=", BY_PADRAO);
+			//caso não tenha encontrado sinal de maior, ou sinal de igual, chega-se nesse estado
+			//retornando o token menor
+			case 19:
+				prev_char();
+				return search_token("<", BY_PADRAO);
+			//caso tenha encontrado sinal de maior no estado 0, chega-se neste estado
+			//aqui se encontrar um sinal de igual segue-se para o estado 21
+			//e não encontrando sinal de igual, segue para o estado 22
+			case 20:
+				_char = next_char();
+				if (_char == '=') {
+					estado = 21;
+				} else {
+					estado = 22;
+				}
+				break;
+			//caso tenha encontrado sinal de igual no estado 20, chega-se neste estado
+			//e retorna-se token maior ou igual
+			case 21:
+				return search_token(">=", BY_PADRAO);
+			//caso não tenha encontrado sinal de igual chega-se nesse estado
+			//retornando o token maior
+			case 22:
+				prev_char();
+				return search_token(">", BY_PADRAO);
+			//se no estado 0, encontra sinal de mais, menos, multiplicação, vírgula, ponto e vírgula
+			//abre parênteses, fecha parênteses e dois pontos
+			//retorna-se o token correspondente a este lexema
+			case 23:
+				return search_token(lexema, BY_PADRAO);
+			default:
+				break;
+		}
+	}
 }

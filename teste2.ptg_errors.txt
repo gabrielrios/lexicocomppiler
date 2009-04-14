@@ -1,6 +1,6 @@
 CÛdigo com erros encontrados
 
-Arquivo de entrada (versão 2): teste2.ptg
+Arquivo de entrada (versão 1): teste2.ptg
 
 
 Linha CÛdigo
