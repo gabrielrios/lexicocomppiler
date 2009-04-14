@@ -13,13 +13,15 @@
 
 using namespace std;
 
-//representa uma cÃˆlula da tabela de sÃŒmbolos
+//representa uma célula da tabela de símbolos
 class Symbol {
 public:
 	Token token;
 	string lexema;
 	vector<Position> pares;
 	Symbol(Token, string, int, int);
+	//formata a forma de impressão do símbolo
 	string to_str();
+	//adiciona uma posição no símbolo
 	void add_position(int, int);
 };

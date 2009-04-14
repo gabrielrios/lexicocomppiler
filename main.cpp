@@ -14,19 +14,28 @@
 using namespace std;
 
 int main (int argc, char * const argv[]) {
-	Lexico *lexico; //instância da classe Léxico, que contém o método do analisador léxico
-	Token tk; //instância do objeto token
-	fstream file_token; //usado para abrir o arquivo com o código fonte
-    char format[10]; //para formatar os dados a serem impressos no arquivo
-    string source_name; //guarda o nome do arquivo com o código fonte, quando não passado por linha de comando
-	int linha = -1, versao; //auxilia na contagem das linhas do arquivo
-	stringstream output_name; //guarda o nome do arquivo de saída com a lista de tokens
+  //instância da classe Léxico, que contém o método do analisador léxico
+	Lexico *lexico; 
+	//instância do objeto token
+	Token tk; 
+	//usado para abrir o arquivo com o código fonte
+	fstream file_token; 
+	//para formatar os dados a serem impressos no arquivo
+  char format[10]; 
+  //guarda o nome do arquivo com o código fonte, quando não passado por linha de comando
+  string source_name; 
+  //auxilia na contagem das linhas do arquivo
+	int linha = -1, versao; 
+	
+	stringstream output_name; 
 	
 	
 	// Tratamento dos parametros de linha de comando.
-	if (argc > 1 && ( string(argv[1]) == "-v1" || string(argv[1]) == "-v2")) { // Escolhendo a versão do analisador que vai ser usada.
+	// Escolhendo a versão do analisador que vai ser usada.
+	if (argc > 1 && ( string(argv[1]) == "-v1" || string(argv[1]) == "-v2")) { 
 		versao = (string(argv[1]) == "-v1") ? 1 : 2;
-	} else if (string(argv[1]) == "--help" || string(argv[1]) == "-h") {	// Ajuda, mostra sintaxe da chamada do programa e os comandos disponívis
+		// Ajuda, mostra sintaxe da chamada do programa e os comandos disponívis
+	} else if (string(argv[1]) == "--help" || string(argv[1]) == "-h") {	
 		cout << "Analisador Lexico de Portugol. Por Gabriel Rios e Hélder Almeida" << endl;
 		cout << "Uso: lexicocompiler [options] arquivo" << endl;
 		cout << "Opções:"<< endl;
@@ -67,29 +76,37 @@ int main (int argc, char * const argv[]) {
     	file_token << "Linha  Token             Cod  Pos lexema" << endl;
     	file_token << "-----  ----------------  ---  ----------" << endl;
     	do {
-    		tk = lexico->next_token();//chamando o analisador léxico para que devolva um token
+        //chamando o analisador léxico para que devolva um token
+    		tk = lexico->next_token();
     		if (lexico->linha > linha) {
     			linha = lexico->linha;
     			sprintf(format, "%5d  ", (linha+1));
     		} else {
     			sprintf(format, "%5c  ", ' ');
     		}
-    		file_token << format; //colocando o número da linha ou espaço em branco
-    		file_token << tk.to_str(); //imprimindo o token retornado com o código
+    		//colocando o número da linha ou espaço em branco
+    		file_token << format; 
+    		//imprimindo o token retornado com o código
+    		file_token << tk.to_str(); 
     		if (tk.alias == "tkIdentificador" || tk.alias == "tkConstante" || tk.alias == "tkLiteral") {
     			sprintf(format, "%5d", lexico->last_symbol_position); 
-    			file_token << format; //imprimindo a posição do token na tabela de símbolos
+    			//imprimindo a posição do token na tabela de símbolos
+    			file_token << format; 
     		}
     		file_token << endl;
     	} while(tk != lexico->tkEOF) ;
     	
     	file_token << endl;
-    	file_token.close(); //fechando o arquivo de saída
+    	//fechando o arquivo de saída
+    	file_token.close(); 
     	
-    	lexico->print_file_errors(); //imprimindo o arquivo com os erros no código
-    	lexico->print_file_symbol(); //imprimindo a tabela de símbolos
+    	//imprimindo o arquivo com os erros no código
+    	lexico->print_file_errors(); 
+    	//imprimindo a tabela de símbolos
+    	lexico->print_file_symbol(); 
     	
-    	output_name.str(""); //limpando o nome do arquivo de saída para o próximo
+    	//limpando o nome do arquivo de saída para o próximo
+    	output_name.str(""); 
     }
     
     cout << "\tOs arquivos:\n";

@@ -14,16 +14,23 @@ using namespace std;
 
 class Token {
 	public:
-		int _id; // Código do token
-		string alias; // Nome do Token
-		string padrao; // Padrão reconhecido que gera o token
+    // Código do token
+		int _id; 
+		// Nome do Token
+		string alias; 
+		// Padrão reconhecido que gera o token
+		string padrao; 
 	public:
 		Token();
 		Token(string var);
 		Token(string var1, string var2, int n);
-		bool operator==(Token otr); //redefinindo o operador == para comparar o alias do token
-		bool operator!=(Token otr); //redefinindo o operador != para comparar o alias do token
-		bool is_null(); //para verificar se o token possui alias ou este é nulo
-		string to_str(); //formatando a forma de imprimi-los
+		//redefinindo o operador == para comparar o alias do token
+		bool operator==(Token otr); 
+		//redefinindo o operador != para comparar o alias do token
+		bool operator!=(Token otr); 
+		//para verificar se o token possui alias ou este é nulo
+		bool is_null(); 
+		//formatando a forma de imprimi-los
+		string to_str(); 
 };
 #endif
