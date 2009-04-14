@@ -99,6 +99,6 @@ int main (int argc, char * const argv[]) {
     }
     cout << "\tforam tratados pelo analisador lÈxico." << endl << endl;
     
-    system("pause");
+    //system("pause");
     return 0;
 }

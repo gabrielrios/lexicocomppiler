@@ -1,7 +1,7 @@
 /*
  *  lexico.cpp
  *
- *  Created by Gabriel Rios & HÃ©lder Almeida.
+ *  Created by Gabriel Rios & Hélder Almeida.
  *  Copyright 2009. All rights reserved.
  *
  */
@@ -10,18 +10,25 @@
 #include <algorithm>
 #include <fstream>
 #include <sstream>
+#include <cctype>
 
+
+//encapsulamento da "macro" tolower para poder ser utilizada
+//na função transform
 char to_lower (const char c) {
 	return tolower(c);
 }
 
 using namespace std;
 
+//definição do construtor da classe Lexico
 Lexico::Lexico(string source_path, int _versao) {
-	fstream _source;
-	estado = linha = last_error_line = 0;
-	coluna = -1;
-	versao = _versao;
+	fstream _source; //nome do arquivo de entrada
+	estado = 0; //definindo o estado inicial 0
+    linha = 0; //define a linha de leitura do arquivo
+    last_error_line = 0; //última linha que encontrou erro
+	coluna = -1; //define a coluna de leitura do arquivo
+	versao = _versao; //a versão que será usada pelo analisador, pode ser 1 ou 2
 	file_name << source_path;
 	_source.open(source_path.c_str(), ios_base::in);
 	if (!_source) {
@@ -33,16 +40,18 @@ Lexico::Lexico(string source_path, int _versao) {
 	}
 	string str;
 	tkEOF = search_token("tkEOF", BY_TOKEN);
+    //pega linha por linha do arquivo de entrada e armazena no vector
 	while (getline(_source, str)) {
-		str.push_back('\n');
+		str.push_back('\n'); //colocando '\n' no fim de cada linha, devido à função getline removê-lo
 		string::size_type st;
-		while ((st = str.find('\t')) != string::npos){
+		while ((st = str.find('\t')) != string::npos){ //substituindo os '\t's por 2 espaços
             str.replace(st, 1, "  ");
         }
 		source.push_back(str);
 	}
 }
 
+//a depender da escolha da versão chama a next_token_v1 ou next_token_v2
 Token Lexico::next_token() {
 	if (versao == 1) {
 		return next_token_v1();
@@ -51,6 +60,7 @@ Token Lexico::next_token() {
 	}
 }
 
+//lê o próximo caractere do vector com o código fonte
 char Lexico::next_char() {
 	coluna++;
 	if (coluna >= source[linha].size()) {
@@ -60,20 +70,46 @@ char Lexico::next_char() {
 	if (linha >= source.size()) {
 		return -1;
 	}
-	lexema.push_back(source[linha][coluna]);
+	lexema.push_back(source[linha][coluna]); //constrói o lexema, inserindo o caractere atual
 	return source[linha][coluna];
 }
 
+//aponta para o caractere anterior a que o método next_char() apontou
 char Lexico::prev_char() {
 	coluna--;
 	if (coluna <= -1) {
 		linha--;
 		coluna = source[linha].size()-1;
 	}
-	lexema.erase(lexema.size() -1);
+	lexema.erase(lexema.size() -1); //apagando o último caractere inserido no lexema
 	return source[linha][coluna];
 }
 
+bool Lexico::is_alpha(char _char){
+    if(tolower(_char) > 96 && tolower(_char) < 123){
+        return true;
+    } else {
+        return false;
+    }
+}
+bool Lexico::is_digit(char _char){
+    if(tolower(_char) > 47 && tolower(_char) < 58){
+        return true;
+    } else {
+        return false;
+    }
+}
+bool Lexico::is_space(char _char){
+    if(_char == ' ' || _char == 32 || _char == '\n' || _char == 13 || _char == '\t' || _char == 9){
+        return true;
+    } else {
+        return false;
+    }
+}
+
+//verifica se o lexema atual representa uma palavra reservada
+//se representar então retorna o token referente à palavra chave
+//caso contrário retorna o token identificador "tkIdentificador"
 Token Lexico::is_keyword(string lexema) {
 	transform(lexema.begin(), lexema.end(), lexema.begin(), to_lower);
 	Token tmp = search_token(lexema, BY_PADRAO);
@@ -83,21 +119,24 @@ Token Lexico::is_keyword(string lexema) {
 	return tmp;
 }
 
+//executa a análise léxica versão 2, usando estados
 Token Lexico::next_token_v2() {
-	Token tk;
-	int old_line, old_column;
-	char _char;
-	estado = 0;
+	Token tk; //guarda o token a ser retornado
+	int old_line, old_column; //a linha e coluna onde o token foi iniciado
+	char _char; //guarda cada caractere a ser analisado
+	estado = 0; //o primeiro estado, estado inicial
 	while (1) {
 		switch (estado) {
+            //no estado 0 recebe-se o primeiro caractere para definir o token,
+            //após lê-lo identifica-se entre as opções abaixo para qual estado seguir
 			case 0:
 				lexema = "";
 				_char = next_char();
-				if (isspace(_char)) {
+				if (is_space(_char)) {
 					estado = 0;
-				} else if (isalpha(_char))	{
+				} else if (is_alpha(_char))	{
 					estado = 1;
-				} else if (isdigit(_char)) {
+				} else if (is_digit(_char)) {
 					estado = 3;
 				} else if (_char == '"') {
 					estado = 5;
@@ -116,17 +155,23 @@ Token Lexico::next_token_v2() {
 				} else if (_char == -1) {
 					return tkEOF;
 				} else {
+                    //caso o caractere não seja válido adiciona um erro na lista de erros
                     list_erros.push_back(Error(linha, coluna, ER_CARACTERE_INVALIDO, _char));
 				}
 				break;
+			//caso tenha encontrado uma letra no estado 0
+			//ou ter encontrado letra ou dígito no estado 1
 			case 1:
 				_char = next_char();
-				if (isalpha(_char) || isdigit(_char) || _char == '_') {
+				if (is_alpha(_char) || is_digit(_char) || _char == '_') {
 					estado = 1;
 				} else {
 					estado = 2;
 				}
 				break;
+			//caso tenha encontrado, no estado 1, algum caractere 
+            //que não possa entrar no padrão do identificador
+            //retorna o token identificador ou o token da palavra reservada
 			case 2:
 				prev_char();
 				tk = is_keyword(lexema);
@@ -134,6 +179,9 @@ Token Lexico::next_token_v2() {
 					insert_symbol(tk, lexema, linha+1, (coluna+1)-(lexema.size()-1));
 				} ;
 				return tk;
+			//caso tenha encontrado um dígito no estado 0
+			//continua neste estado até encontrar algum caractere que não seja dígito
+			//quando encontra segue para o estado 4
 			case 3:
 				_char = next_char();
 				if (isdigit(_char)) {
@@ -142,11 +190,17 @@ Token Lexico::next_token_v2() {
 					estado = 4;
 				}
 				break;
+			//foi encontrado algum caractere diferente de dígito no estado 3
+            //retorna o token constante
 			case 4:
 				prev_char();
 				tk = search_token("tkConstante", BY_TOKEN);
 				insert_symbol(tk, lexema, linha+1, (coluna+1)-(lexema.size()-1));
 				return tk;
+			//quando encontra aspas duplas, definindo assim o início de um literal\
+			//segue para o estado 6 caso encontre outra aspas duplas
+			//segue para o estado 0 caso encontre final de linha, gerando um erro na lista de erros
+			//continua no estado 5 caso não encontre aspas duplas ou fim de linha
 			case 5:
 				_char = next_char();				
 				if (_char == '"') {
@@ -158,12 +212,16 @@ Token Lexico::next_token_v2() {
 					estado = 5;
 				}
 				break;
+			//caso tenha encontrado aspas duplas no estado 5, finalizando o literal
+			//armazena o literal, sem as aspas, no lexema\
+			//retorna o token literal
 			case 6:
 				lexema.erase(lexema.begin());
 				lexema.erase(lexema.end()-1);
 				tk = search_token("tkLiteral", BY_TOKEN);
 				insert_symbol(tk, lexema, linha+1, coluna-(lexema.size()-1));
 				return tk;
+			//
 			case 7:
 				_char = next_char();
 				if (_char == '*') {
@@ -263,11 +321,6 @@ Token Lexico::next_token_v2() {
 			default:
 				break;
 		}
-//		lexema.push_back(_char);
-
-#ifdef DEBUG
-		printf("%i- %i\n", estado, _char);
-#endif
 	}
 }
 
@@ -427,12 +480,12 @@ Token Lexico::next_token_v1() {
 	do {
 		lexema = "";
 		_char = next_char();
-		if (isspace(_char)) {
+		if (is_space(_char)) {
 			continue;
-		} else if (isalpha(_char))	{
+		} else if (is_alpha(_char))	{
 			do {
 				_char = next_char();
-			} while (isalpha(_char) || isdigit(_char) || _char == '_');
+			} while (is_alpha(_char) || is_digit(_char) || _char == '_');
 			prev_char();
 			tk = is_keyword(lexema);
 
@@ -440,10 +493,10 @@ Token Lexico::next_token_v1() {
 				insert_symbol(tk, lexema, linha+1, (coluna+1)-(lexema.size()-1));
 			}
 			return tk;
-		} else if (isdigit(_char)) {
+		} else if (is_digit(_char)) {
 			do {
 				_char = next_char();
-			} while (isdigit(_char));
+			} while (is_digit(_char));
 			prev_char();
 			tk = search_token("tkConstante", BY_TOKEN);
 			insert_symbol(tk, lexema, linha+1, (coluna+1)-(lexema.size()-1));

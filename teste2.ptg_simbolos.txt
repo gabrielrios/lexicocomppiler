@@ -1,6 +1,6 @@
-Tabela de s�mbolos
+Tabela de sÌmbolos
 
-Arquivo de entrada: teste2.ptg
+Arquivo de entrada (versão 2): teste2.ptg
 
 
 Pos	    Token	          Lexema	                   Pares (LL,CC) onde LL=linha e CC=coluna

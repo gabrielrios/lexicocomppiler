@@ -1,9 +1,9 @@
-CÛdigo com erros encontrados
+C√õdigo com erros encontrados
 
-Arquivo de entrada: teste2.ptg
+Arquivo de entrada (vers√£o 2): teste2.ptg
 
 
-Linha CÛdigo
+Linha C√õdigo
 ----- -----------------------------------------------------
     1 Inicio
     2   Inteiro: X, Y, Z;
@@ -34,7 +34,7 @@ Linha CÛdigo
    27     Maior = Z;
    28     Se (X<=Y) Ent„o
       -----------------^ 
-      Erro lÈxico na linha 28 coluna 18: Caractere inv·lido `„'
+      Erro l√àxico na linha 28 coluna 18: Caractere inv¬∑lido `„'
    29       Menor = X;
    30     Senao 
    31       Menor = Y;
