@@ -20,13 +20,20 @@ typedef enum eErrorType {
 //classe que guarda as características
 class Error{
     public:
-    int linha; //linha em que o erro aconteceu
-    int coluna; //coluna em que o erro aconteceu
-    ErrorType erro; //tipo de erro
-    char invalido; //se for caractere inválido, guarda
     
-    //construtores da classe
-    Error(int _linha, int _coluna, ErrorType _erro){ 
+    //linha em que o erro aconteceu
+    int linha; 
+    
+    //coluna em que o erro aconteceu
+    int coluna; 
+    
+    //tipo de erro
+    ErrorType erro;
+    
+    //se for caractere inválido, guarda
+    char invalido; 
+    
+    Error(int _linha, int _coluna, ErrorType _erro){
         linha = _linha;
         coluna = _coluna;
         erro = _erro;

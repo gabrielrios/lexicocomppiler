@@ -23,12 +23,23 @@ using namespace std;
 
 //definição do construtor da classe Lexico
 Lexico::Lexico(string source_path, int _versao) {
-	fstream _source; //nome do arquivo de entrada
-	estado = 0; //definindo o estado inicial 0
-    linha = 0; //define a linha de leitura do arquivo
-    last_error_line = 0; //última linha que encontrou erro
-	coluna = -1; //define a coluna de leitura do arquivo
-	versao = _versao; //a versão que será usada pelo analisador, pode ser 1 ou 2
+    //nome do arquivo de entrada
+	fstream _source;
+	
+	//definindo o estado inicial 0
+	estado = 0;
+	
+	//define a linha de leitura do arquivo 
+    linha = 0; 
+    
+    //última linha que encontrou erro
+    last_error_line = 0; 
+    
+    //define a coluna de leitura do arquivo
+	coluna = -1; 
+	
+	//a versão que será usada pelo analisador, pode ser 1 ou 2
+	versao = _versao; 
 	file_name << source_path;
 	_source.open(source_path.c_str(), ios_base::in);
 	if (!_source) {
@@ -40,11 +51,16 @@ Lexico::Lexico(string source_path, int _versao) {
 	}
 	string str;
 	tkEOF = search_token("tkEOF", BY_TOKEN);
+	
     //pega linha por linha do arquivo de entrada e armazena no vector
 	while (getline(_source, str)) {
-		str.push_back('\n'); //colocando '\n' no fim de cada linha, devido à função getline removê-lo
+		
+		//colocando '\n' no fim de cada linha, devido à função getline removê-lo
+		str.push_back('\n'); 
 		string::size_type st;
-		while ((st = str.find('\t')) != string::npos){ //substituindo os '\t's por 2 espaços
+		
+		//substituindo os '\t's por 2 espaços
+		while ((st = str.find('\t')) != string::npos){ 
             str.replace(st, 1, "  ");
         }
 		source.push_back(str);
@@ -70,7 +86,9 @@ char Lexico::next_char() {
 	if (linha >= source.size()) {
 		return -1;
 	}
-	lexema.push_back(source[linha][coluna]); //constrói o lexema, inserindo o caractere atual
+	
+	 //constrói o lexema, inserindo o caractere atual
+	lexema.push_back(source[linha][coluna]);
 	return source[linha][coluna];
 }
 
@@ -81,7 +99,9 @@ char Lexico::prev_char() {
 		linha--;
 		coluna = source[linha].size()-1;
 	}
-	lexema.erase(lexema.size() -1); //apagando o último caractere inserido no lexema
+	
+	//apagando o último caractere inserido no lexema
+	lexema.erase(lexema.size() -1); 
 	return source[linha][coluna];
 }
 
@@ -141,7 +161,7 @@ bool Lexico::load_tokens() {
 		return false;
 	}
 	
-	//armaenando o "nome" do token e o seu padrão em variáveis auxiliares
+	//armazenando o "nome" do token e o seu padrão em variáveis auxiliares
 	while (tokens_list >> tmp_alias >> tmp_padrao) {
 		if (tmp_padrao == "#") {
 			tmp_padrao = "";
@@ -154,13 +174,16 @@ bool Lexico::load_tokens() {
 //procura o token no vetor de tokens, a busca pode ser feita pelo padrão do token
 //ou pelo seu próprio nome
 Token Lexico::search_token(string value, SearchMethod by) {
-	if (by == BY_PADRAO) { // Procura pelo lexema pelo padrão
+
+	// Procura pelo lexema pelo padrão
+	if (by == BY_PADRAO) { 
 		for (int i = 0; i < tokens.size(); i++) {
 			if (tokens[i].padrao == value) {
 				return tokens[i];
 			}
 		}
-	} else if (by == BY_TOKEN) {  // Procura pelo lexema pelo padrão
+	// Procura pelo lexema pelo padrão
+	} else if (by == BY_TOKEN) {  
 		for (int i = 0; i < tokens.size(); i++) {
 			if (tokens[i].alias == value) {
 				return tokens[i];
@@ -280,39 +303,62 @@ bool Lexico::print_file_errors(){
 
 //executa a análise léxica versão 1, sem usar estados
 Token Lexico::next_token_v1() {
-	char _char; //guarda cada caractere a ser analisado
-	int old_line, old_column; //a linha e coluna onde o token foi iniciado
-	Token tk; //guarda o token a ser retornado
+	//guarda cada caractere a ser analisado
+	char _char; 
+	
+	//a linha e coluna onde o token foi iniciado
+	int old_line, old_column; 
+	
+	//guarda o token a ser retornado
+	Token tk; 
 	do {
 		lexema = "";
-		_char = next_char(); //pegando o caractere a ser analisado
+		
+		//pegando o caractere a ser analisado
+		_char = next_char(); 
+		
 		//verifica se o caractere atual é um espaço em branco
 		//se for volta ao início do laço para pegar o próximo caractere
 		if (is_space(_char)) {
 			continue;
-		} else if (is_alpha(_char))	{ //verifica se o caractere atual é um caractere a-zA-z
+			
+		//verifica se o caractere atual é um caractere a-zA-z
+		} else if (is_alpha(_char))	{ 
 			// procura até encontrar um caractere diferente de a-zA-z ou 0-9 ou _
             do {
 				_char = next_char();
 			} while (is_alpha(_char) || is_digit(_char) || _char == '_');
-			prev_char(); //aponta para o caractere anterior
-			tk = is_keyword(lexema); //verifica se o lexema atual é uma palavra reservada
-			                         //ou um token identificador
+			
+			//aponta para o caractere anterior
+			prev_char(); 
+			
+			// verifica se o lexema atual é uma palavra reservada
+            // ou um token identificador 
+			tk = is_keyword(lexema); 
+
 			//inserindo na tabela de símbolos caso seja um token identificador
 			if (tk._id == 0) {
 				insert_symbol(tk, lexema, linha+1, (coluna+1)-(lexema.size()-1));
 			}
-			return tk; //retornando o token encontrado
-		} else if (is_digit(_char)) { //verifica se o caractere atual é um dígito 0-9
+			
+			//retornando o token encontrado
+			return tk; 
+			
+			//verifica se o caractere atual é um dígito 0-9
+		} else if (is_digit(_char)) { 
 			//pegando todos os dígitos da sequência até encontrar um caractere que não seja
             do {
 				_char = next_char();
 			} while (is_digit(_char));
 			prev_char();
-			tk = search_token("tkConstante", BY_TOKEN); //procurando pelo token constante
+			
+			//procurando pelo token constante
+			tk = search_token("tkConstante", BY_TOKEN); 
 			insert_symbol(tk, lexema, linha+1, (coluna+1)-(lexema.size()-1));
 			return tk;
-		} else if (_char == '"') { //verifica se o caractere é uma aspas duplas, iniciando um literal
+			
+			//verifica se o caractere é uma aspas duplas, iniciando um literal
+		} else if (_char == '"') { 
 			//ignora todos os caracteres até encontrar aspas duplas novamente, retornando token literal,
 			//ou até encontrar fim de linha, gerando erro
             do {
@@ -328,21 +374,34 @@ Token Lexico::next_token_v1() {
 				list_erros.push_back(Error(linha, source[linha].size()-lexema.size()+1, ER_LITERAL_NAO_FECHADO));
 				continue;
 			}
-		} else if (_char == '/') { //verifica se o caractere é uma barra, divisão ou abre comentário de linha
+			//verifica se o caractere é uma barra, divisão ou abre comentário de linha
+		} else if (_char == '/') { 
 			_char = next_char();
-			if (_char == '*') { //se o próximo caractere for um asterisco há abertura de comentário
-				do {            //e continua pegando caracteres até encontrar fim de linha
+			
+			//se o próximo caractere for um asterisco há abertura de comentário
+			if (_char == '*') { 
+				
+				//e continua pegando caracteres até encontrar fim de linha
+				do {            
 					_char = next_char();
 				} while (_char != '\n');
 				continue;
-			} else { //se o próximo caractere após a barra não for um asterisco, então
-				prev_char(); //aponta um caractere antes e retorna o token divisão
+			//se o próximo caractere após a barra não for um asterisco, então
+			} else { 
+				
+				//aponta um caractere antes e retorna o token divisão
+				prev_char(); 
 				return search_token(lexema, BY_PADRAO);
 			}
-		} else if (_char == '{'){ //se o caractere for abre chaves, verifica se é abertura de comentário de bloco
+		//se o caractere for abre chaves, verifica se é abertura de comentário de bloco
+		} else if (_char == '{'){ 
 			_char = next_char();
-			if (_char == '*') { //se encontrar um asterisco após o abre chaves, há abertura de comenário de bloco 
-				old_line = linha; //guarda a linha e a coluna onde começou o comentário
+			
+			//se encontrar um asterisco após o abre chaves, há abertura de comenário de bloco 
+			if (_char == '*') { 
+				
+				//guarda a linha e a coluna onde começou o comentário
+				old_line = linha; 
 				old_column = coluna;
 				char old_char;
 				//ignora todos os caracteres encontrados até encontrar a sequência *}
@@ -363,21 +422,31 @@ Token Lexico::next_token_v1() {
 				list_erros.push_back(Error(linha, coluna, ER_CARACTERE_INVALIDO, _char));
 				continue;
 			}
-		} else if (_char == '=') {//se o caractere atual for um igual pode ser atribuição ou igualdade (comparação)
+		//se o caractere atual for um igual pode ser atribuição ou igualdade (comparação)
+		} else if (_char == '=') {
 			_char = next_char();
-			if (_char != '=') { //se o próximo caractere for diferente de igual, retorna token atribuição
+			//se o próximo caractere for diferente de igual, retorna token atribuição
+			if (_char != '=') { 
 				prev_char();
 			}
 			return search_token(lexema, BY_PADRAO);
-		} else if (_char == '<') { //se o caractere atual for o sinal de menor, o próximo caractere determina
-		                           //se há um token menor, menor ou igual ou diferente
+			
+		//se o caractere atual for o sinal de menor, o próximo caractere determina
+		//se há um token menor, menor ou igual ou diferente
+		} else if (_char == '<') { 
 			_char = next_char();
-			if (_char != '>' && _char != '=') { //se o próximo caractere não for o sinal de maior ou o sinal de igual
-				prev_char();                    //aponta-se para um caractere anterior, retornando token menor
+			
+			//se o próximo caractere não for o sinal de maior ou o sinal de igual
+			if (_char != '>' && _char != '=') { 
+				
+				//aponta-se para um caractere anterior, retornando token menor
+				prev_char();                    
 			}
 			return search_token(lexema, BY_PADRAO);
-		} else if (_char == '>') { //se o caractere atual for o sinal de maior, o próximo caractere determina
-		                           //se o token será maior ou maior ou igual
+			
+		//se o caractere atual for o sinal de maior, o próximo caractere determina
+		//se o token será maior ou maior ou igual
+		} else if (_char == '>') { 
 			_char = next_char();
 			if (_char != '=') {
 				prev_char();
@@ -388,9 +457,11 @@ Token Lexico::next_token_v1() {
             //o retorno do token é imediato, dependendo apenas do caractere encontrado atualmente
 		} else if (_char == '+' || _char == '-' || _char == '*' || _char == ',' || _char == ';' || _char == ':' || _char == '(' || _char == ')' ) {
 			return search_token(lexema, BY_PADRAO);
-		} else if (_char == -1) { //chegou ao fim do arquivo
+		//chegou ao fim do arquivo
+		} else if (_char == -1) { 
 			return tkEOF;
-		} else { //qualquer caractere que não tenha sido listado gera erro
+		//qualquer caractere que não tenha sido listado gera erro
+		} else {
 			list_erros.push_back(Error(linha, coluna, ER_CARACTERE_INVALIDO, _char));
 		}
 	} while (_char != -1);
@@ -400,10 +471,14 @@ Token Lexico::next_token_v1() {
 
 //executa a análise léxica versão 2, usando estados
 Token Lexico::next_token_v2() {
-	Token tk; //guarda o token a ser retornado
-	int old_line, old_column; //a linha e coluna onde o token foi iniciado
-	char _char; //guarda cada caractere a ser analisado
-	estado = 0; //o primeiro estado, estado inicial
+	//guarda o token a ser retornado
+	Token tk; 
+	//a linha e coluna onde o token foi iniciado
+	int old_line, old_column; 
+	//guarda cada caractere a ser analisado
+	char _char; 
+	//o primeiro estado, estado inicial
+	estado = 0; 
 	while (1) {
 		switch (estado) {
             //no estado 0 recebe-se o primeiro caractere para definir o token,
@@ -508,7 +583,7 @@ Token Lexico::next_token_v2() {
 				if (_char == '*') {
 					estado = 8;
 				} else {
-					estado = 9; // ?
+					estado = 9;
 				}
 				break;
 			//caso tenha encontrado um asterisco no estado 7, isso siginifica
