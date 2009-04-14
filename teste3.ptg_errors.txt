@@ -1,6 +1,6 @@
 Código com erros encontrados
 
-Arquivo de entrada (versão 1): teste3.ptg
+Arquivo de entrada (versão 2): teste3.ptg
 
 
 Linha Código

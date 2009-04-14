@@ -16,17 +16,23 @@ using namespace std;
 int main (int argc, char * const argv[]) {
   //instância da classe Léxico, que contém o método do analisador léxico
 	Lexico *lexico; 
+	
 	//instância do objeto token
 	Token tk; 
+	
 	//usado para abrir o arquivo com o código fonte
 	fstream file_token; 
+	
 	//para formatar os dados a serem impressos no arquivo
   char format[10]; 
+  
   //guarda o nome do arquivo com o código fonte, quando não passado por linha de comando
   string source_name; 
+  
   //auxilia na contagem das linhas do arquivo
 	int linha = -1, versao; 
 	
+	//nome do arquivo de saída para os erros
 	stringstream output_name; 
 	
 	

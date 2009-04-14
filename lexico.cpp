@@ -632,7 +632,7 @@ Token Lexico::next_token_v2() {
 				}
 				break;
 			//caso tenha sido encontrado asterisco no estado 12, então chega-se a este estado
-			//se encontrar o caractere fecha aspas, }, significa que o comentário foi fechado e
+			//se encontrar o caractere fecha chaves, }, significa que o comentário foi fechado e
 			//deve-se continuar a análise a partir do próximo caractere, voltando para o estado 0,
 			//mas se for encontrado outro asterisco, deve-se continuar no estado 12
 			//até encontrar o fecha aspas ou outro caractere, o que faz voltar para o estado 11
