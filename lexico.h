@@ -20,6 +20,7 @@
 
 using namespace std;
 
+//define o tipo de busca no método search_token
 typedef enum eSearchMethod {
 	BY_TOKEN,
 	BY_PADRAO

@@ -1,9 +1,9 @@
-C√õdigo com erros encontrados
+CÛdigo com erros encontrados
 
-Arquivo de entrada (vers√£o 1): teste1.ptg
+Arquivo de entrada (vers„o 1): teste1.ptg
 
 
-Linha C√õdigo
+Linha CÛdigo
 ----- -----------------------------------------------------
     1 inicio
     2    inteiro: n, fatorial;
@@ -12,7 +12,7 @@ Linha C√õdigo
     5    fatorial <- 1;
     6    para i de 1 ate n faÁa
       -----------------------^ 
-      Erro l√àxico na linha 6 coluna 24: Caractere inv¬∑lido `Á'
+      Erro lÈxico na linha 6 coluna 24: Caractere inv·lido `Á'
     7       fatorial <- fatorial * i;
     8    fim_para
     9    imprima("Fatorial (");

@@ -1,6 +1,6 @@
 Lista de tokens por linha
 
-Arquivo de entrada (vers√£o 1): teste1.ptg
+Arquivo de entrada (vers„o 1): teste1.ptg
 
 
 Linha  Token             Cod  Pos lexema

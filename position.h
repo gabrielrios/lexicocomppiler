@@ -1,7 +1,7 @@
 /*
  *  position.h
  *
- *  Created by Gabriel Rios & HŽlder Almeida.
+ *  Created by Gabriel Rios & Hélder Almeida.
  *  Copyright 2009 Home. All rights reserved.
  *
  */

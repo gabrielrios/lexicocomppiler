@@ -1,7 +1,7 @@
 /*
  *  symbol.h
  *
- *  Created by Gabriel Rios & HÃ©lder Almeida.
+ *  Created by Gabriel Rios & Hélder Almeida.
  *  Copyright 2009 Home. All rights reserved.
  *
  */

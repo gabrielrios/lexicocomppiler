@@ -1,17 +1,17 @@
-CÃ›digo com erros encontrados
+Código com erros encontrados
 
-Arquivo de entrada (versÃ£o 1): teste3.ptg
+Arquivo de entrada (versão 1): teste3.ptg
 
 
-Linha CÃ›digo
+Linha Código
 ----- -----------------------------------------------------
     1 // Comentário 1 //
       ---------^ 
-      Erro lÃˆxico na linha 1 coluna 10: Caractere invÂ·lido `á'
+      Erro léxico na linha 1 coluna 10: Caractere inválido `á'
     2 {* Comentário 2 *}
     3 (* Comentário 3 *)
       ---------^ 
-      Erro lÃˆxico na linha 3 coluna 10: Caractere invÂ·lido `á'
+      Erro léxico na linha 3 coluna 10: Caractere inválido `á'
     4 /* Comentário 4 
     5 /* Comentário 5
     6 
@@ -26,7 +26,7 @@ Linha CÃ›digo
    15   leia (z);
    16   media = (x+y+z)*0.33333333;
       -------------------^ 
-      Erro lÃˆxico na linha 16 coluna 20: Caractere invÂ·lido `.'
+      Erro léxico na linha 16 coluna 20: Caractere inválido `.'
    17   imprima("Media = ");
    18   imprima(media);
    19   imprima("\n");

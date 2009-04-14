@@ -1,7 +1,7 @@
 /*
  *  token.h
  *
- *  Created by Gabriel Rios & HŽlder Almeida.
+ *  Created by Gabriel Rios & Hélder Almeida.
  *  Copyright 2009 Home. All rights reserved.
  *
  */
@@ -21,9 +21,9 @@ class Token {
 		Token();
 		Token(string var);
 		Token(string var1, string var2, int n);
-		bool operator==(Token otr);
-		bool operator!=(Token otr);
-		bool is_null();
-		string to_str();
+		bool operator==(Token otr); //redefinindo o operador == para comparar o alias do token
+		bool operator!=(Token otr); //redefinindo o operador != para comparar o alias do token
+		bool is_null(); //para verificar se o token possui alias ou este é nulo
+		string to_str(); //formatando a forma de imprimi-los
 };
 #endif
